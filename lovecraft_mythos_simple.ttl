@@ -1,0 +1,446 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix instance: <https://lovecraft.example.org/instance#> .
+@prefix lovecraft: <https://lovecraft.example.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+instance:CultofCthulhu a lovecraft:Creature ;
+    lovecraft:worships instance:Cthulhu .
+
+instance:CultofHastur a lovecraft:Creature ;
+    lovecraft:worships instance:Hastur .
+
+instance:CultoftheBlackPharaoh a lovecraft:Creature ;
+    lovecraft:worships instance:Nyarlathotep .
+
+instance:CultoftheGoat a lovecraft:Creature ;
+    lovecraft:worships instance:ShubNiggurath .
+
+instance:DeepOne a owl:NamedIndividual,
+        lovecraft:Creature ;
+    lovecraft:hasDescription "Fish-frog hybrids that serve Dagon"@en ;
+    lovecraft:hasName "DeepOne"@en ;
+    lovecraft:locatedIn instance:TheSea ;
+    lovecraft:worships instance:Dagon .
+
+instance:EssexCult a lovecraft:Creature ;
+    lovecraft:worships instance:Dagon .
+
+instance:Ghoul a owl:NamedIndividual,
+        lovecraft:Creature ;
+    lovecraft:fears instance:Fire ;
+    lovecraft:hasDescription "Subterranean humanoids that feed on corpses"@en ;
+    lovecraft:hasName "Ghoul"@en ;
+    lovecraft:locatedIn instance:Dreamlands .
+
+instance:HPLovecraft a owl:NamedIndividual,
+        lovecraft:Human ;
+    lovecraft:fears instance:Madness,
+        instance:TheUnknown ;
+    lovecraft:hasDescription "Howard Phillips Lovecraft, the creator of the mythos"@en ;
+    lovecraft:hasName "H.P.Lovecraft"@en ;
+    lovecraft:locatedIn instance:Providence .
+
+instance:Innsmouth a owl:NamedIndividual,
+        lovecraft:Location ;
+    lovecraft:hasDescription "A decaying coastal town inhabited by Deep One hybrids"@en ;
+    lovecraft:hasName "Innsmouth"@en ;
+    lovecraft:isPartOf instance:Massachusetts .
+
+instance:MiskatonicUniversity a owl:NamedIndividual,
+        lovecraft:Location ;
+    lovecraft:hasDescription "A prestigious university with a dark history"@en ;
+    lovecraft:hasName "MiskatonicUniversity"@en ;
+    lovecraft:isPartOf instance:Arkham .
+
+instance:Nightgaunt a owl:NamedIndividual,
+        lovecraft:Creature ;
+    lovecraft:fears instance:Light ;
+    lovecraft:hasDescription "Faceless, winged creatures that carry victims to unknown fates"@en ;
+    lovecraft:hasName "Nightgaunt"@en ;
+    lovecraft:locatedIn instance:TheNight .
+
+instance:OuterGodCults a lovecraft:Creature ;
+    lovecraft:worships instance:Azathoth .
+
+instance:PlateauOfLeng a owl:NamedIndividual,
+        lovecraft:Location ;
+    lovecraft:hasDescription "A high plateau in Central Asia, home to ancient horrors"@en ;
+    lovecraft:hasName "PlateauOfLeng"@en ;
+    lovecraft:isPartOf instance:Asia .
+
+instance:RandolphCarter a owl:NamedIndividual,
+        lovecraft:Human ;
+    lovecraft:fears instance:TheUnknown ;
+    lovecraft:hasDescription "A recurring character in Lovecraft's stories, explorer of the Dreamlands"@en ;
+    lovecraft:hasName "RandolphCarter"@en ;
+    lovecraft:locatedIn instance:Arkham .
+
+instance:Rlyeh a owl:NamedIndividual,
+        lovecraft:Location ;
+    lovecraft:hasDescription "The sunken city where Cthulhu dreams"@en ;
+    lovecraft:hasName "Rlyeh"@en ;
+    lovecraft:isPartOf instance:ThePacificOcean .
+
+instance:Shoggoth a owl:NamedIndividual,
+        lovecraft:Creature ;
+    lovecraft:controls instance:Shape-shifting ;
+    lovecraft:fears instance:ElderSign ;
+    lovecraft:hasDescription "Amorphous, intelligent protoplasmic masses"@en ;
+    lovecraft:hasName "Shoggoth"@en .
+
+instance:SilverKey a owl:NamedIndividual,
+        lovecraft:Artifact ;
+    lovecraft:createdBy instance:YogSothoth ;
+    lovecraft:hasDescription "A key that can open gates to other dimensions"@en ;
+    lovecraft:hasName "SilverKey"@en .
+
+instance:SnakeCults a lovecraft:Creature ;
+    lovecraft:worships instance:Yig .
+
+instance:Tsathoggua lovecraft:describedIn instance:BookOfEibon .
+
+instance:UbboSathla lovecraft:describedIn instance:BookOfEibon .
+
+instance:WitchCult a lovecraft:Creature ;
+    lovecraft:worships instance:YogSothoth .
+
+lovecraft:Ontology a owl:Ontology ;
+    dcterms:creator "Lovecraft Ontology Project"@en ;
+    dcterms:date "2024-01-01"^^xsd:date ;
+    dcterms:description "An OWL ontology describing the entities, concepts, and relationships in H.P. Lovecraft's Cthulhu Mythos."@en ;
+    dcterms:title "Lovecraft Mythos Ontology"@en ;
+    owl:versionInfo "1.0.0" .
+
+lovecraft:controls a owl:ObjectProperty ;
+    rdfs:label "controls"@en ;
+    rdfs:comment "Relationship between a deity and what they control"@en ;
+    rdfs:domain lovecraft:Deity ;
+    rdfs:range lovecraft:Entity .
+
+lovecraft:createdBy a owl:ObjectProperty ;
+    rdfs:label "created by"@en ;
+    rdfs:comment "Relationship between an artifact and its creator"@en ;
+    rdfs:domain lovecraft:Artifact ;
+    rdfs:range lovecraft:Entity .
+
+lovecraft:describedIn a owl:ObjectProperty ;
+    rdfs:label "described in"@en ;
+    rdfs:comment "Relationship between an entity and a book that describes it"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range lovecraft:Book .
+
+lovecraft:fears a owl:ObjectProperty ;
+    rdfs:label "fears"@en ;
+    rdfs:comment "Relationship between a being and what they fear"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range lovecraft:Entity .
+
+lovecraft:hasAge a owl:DatatypeProperty ;
+    rdfs:label "hasAge"@en ;
+    rdfs:comment "The age of an entity (in years)"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range xsd:string .
+
+lovecraft:hasDescription a owl:DatatypeProperty ;
+    rdfs:label "hasDescription"@en ;
+    rdfs:comment "A description of an entity"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range xsd:string .
+
+lovecraft:hasName a owl:DatatypeProperty ;
+    rdfs:label "hasName"@en ;
+    rdfs:comment "The name of an entity"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range xsd:string .
+
+lovecraft:hasOrigin a owl:DatatypeProperty ;
+    rdfs:label "hasOrigin"@en ;
+    rdfs:comment "The origin or place of creation"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range xsd:string .
+
+lovecraft:hasPower a owl:ObjectProperty ;
+    rdfs:label "has power"@en ;
+    rdfs:comment "The powers or abilities of an entity"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range xsd:string .
+
+lovecraft:hasResourceType a owl:DatatypeProperty ;
+    rdfs:label "has resource type"@en ;
+    rdfs:comment "The type of a resource"@en ;
+    rdfs:domain lovecraft:Resource ;
+    rdfs:range xsd:string .
+
+lovecraft:hasResourceValue a owl:DatatypeProperty ;
+    rdfs:label "has resource value"@en ;
+    rdfs:comment "The value of a resource"@en ;
+    rdfs:domain lovecraft:Resource ;
+    rdfs:range xsd:string .
+
+lovecraft:isPartOf a owl:ObjectProperty ;
+    rdfs:label "is part of"@en ;
+    rdfs:comment "Part-whole relationship"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range lovecraft:Entity .
+
+lovecraft:locatedIn a owl:ObjectProperty ;
+    rdfs:label "located in"@en ;
+    rdfs:comment "Physical location of an entity or artifact"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range lovecraft:Location .
+
+lovecraft:worships a owl:ObjectProperty ;
+    rdfs:label "worships"@en ;
+    rdfs:comment "Relationship between a being and a deity they worship"@en ;
+    rdfs:domain lovecraft:Entity ;
+    rdfs:range lovecraft:Deity .
+
+instance:AbdulAlhazred a owl:NamedIndividual,
+        lovecraft:Entity,
+        lovecraft:Human ;
+    lovecraft:fears instance:HisOwnCreations ;
+    lovecraft:hasDescription "The mad Arab, author of the Necronomicon"@en ;
+    lovecraft:hasName "AbdulAlhazred"@en ;
+    lovecraft:locatedIn instance:Damascus .
+
+instance:Art a lovecraft:Concept .
+
+instance:Asia a lovecraft:Location .
+
+instance:Azathoth a owl:NamedIndividual,
+        lovecraft:OuterGod ;
+    lovecraft:controls instance:Reality,
+        instance:Space,
+        instance:Time ;
+    lovecraft:hasDescription "The blind idiot god at the center of the universe"@en ;
+    lovecraft:hasName "Azathoth"@en .
+
+instance:Cthulhu a owl:NamedIndividual,
+        lovecraft:GreatOldOne ;
+    lovecraft:controls instance:Dreams,
+        instance:Madness ;
+    lovecraft:describedIn instance:Necronomicon ;
+    lovecraft:fears instance:Light,
+        instance:TheSun ;
+    lovecraft:hasDescription "The high priest of the Great Old Ones, sleeping in R'lyeh"@en ;
+    lovecraft:hasName "Cthulhu"@en .
+
+instance:Damascus a lovecraft:Location .
+
+instance:Darkness a lovecraft:Concept .
+
+instance:DeepOnes a lovecraft:Concept,
+        lovecraft:Creature ;
+    lovecraft:worships instance:Dagon .
+
+instance:Dreamlands a owl:NamedIndividual,
+        lovecraft:Location ;
+    lovecraft:hasDescription "A parallel dimension accessible through dreams"@en ;
+    lovecraft:hasName "Dreamlands"@en ;
+    lovecraft:isPartOf instance:TheAstralPlane .
+
+instance:Dreams a lovecraft:Concept .
+
+instance:Eibon a lovecraft:Entity .
+
+instance:ElderGods a lovecraft:Entity .
+
+instance:ElderSign a owl:NamedIndividual,
+        lovecraft:Artifact,
+        lovecraft:Concept,
+        lovecraft:Resource ;
+    lovecraft:createdBy instance:ElderGods ;
+    lovecraft:hasDescription "A protective symbol against the Great Old Ones"@en ;
+    lovecraft:hasName "ElderSign"@en ;
+    lovecraft:hasResourceType "Symbol"@en ;
+    lovecraft:hasResourceValue "A protective sigil against evil"@en .
+
+instance:Fertility a lovecraft:Concept .
+
+instance:Fire a lovecraft:Concept .
+
+instance:Hastur a owl:NamedIndividual,
+        lovecraft:GreatOldOne ;
+    lovecraft:controls instance:Art,
+        instance:Madness,
+        instance:Theatre ;
+    lovecraft:fears instance:Reality ;
+    lovecraft:hasDescription "The King in Yellow, associated with madness and art"@en ;
+    lovecraft:hasName "Hastur"@en .
+
+instance:HisOwnCreations a lovecraft:Concept .
+
+instance:Knowledge a lovecraft:Concept .
+
+instance:LandDwellers a lovecraft:Concept .
+
+instance:Nature a lovecraft:Concept .
+
+instance:Nyarlathotep a owl:NamedIndividual,
+        lovecraft:OuterGod ;
+    lovecraft:controls instance:Madness,
+        instance:Space,
+        instance:Time ;
+    lovecraft:describedIn instance:Necronomicon ;
+    lovecraft:hasDescription "The crawling chaos, messenger of the Outer Gods"@en ;
+    lovecraft:hasName "Nyarlathotep"@en .
+
+instance:Providence a lovecraft:Location .
+
+instance:Purity a lovecraft:Concept .
+
+instance:Shape-shifting a lovecraft:Concept .
+
+instance:ShubNiggurath a owl:NamedIndividual,
+        lovecraft:GreatOldOne ;
+    lovecraft:controls instance:Darkness,
+        instance:Fertility,
+        instance:Nature ;
+    lovecraft:describedIn instance:Necronomicon ;
+    lovecraft:fears instance:Purity ;
+    lovecraft:hasDescription "The black goat of the woods with a thousand young"@en ;
+    lovecraft:hasName "ShubNiggurath"@en .
+
+instance:SnakeHatred a lovecraft:Concept .
+
+instance:Snakes a lovecraft:Concept .
+
+instance:TheAstralPlane a lovecraft:Location .
+
+instance:TheNight a lovecraft:Location .
+
+instance:ThePacificOcean a lovecraft:Location .
+
+instance:TheSun a lovecraft:Concept .
+
+instance:Theatre a lovecraft:Concept .
+
+instance:Venom a lovecraft:Concept .
+
+instance:Yig a owl:NamedIndividual,
+        lovecraft:ElderGod ;
+    lovecraft:controls instance:Snakes,
+        instance:Venom ;
+    lovecraft:fears instance:SnakeHatred ;
+    lovecraft:hasDescription "The serpent god, father of all snakes"@en ;
+    lovecraft:hasName "Yig"@en .
+
+lovecraft:ElderGod a owl:Class ;
+    rdfs:label "ElderGod"@en ;
+    rdfs:comment "Benevolent or neutral cosmic entities"@en ;
+    rdfs:subClassOf lovecraft:Deity,
+        lovecraft:Entity .
+
+instance:Arkham a owl:NamedIndividual,
+        lovecraft:Location ;
+    lovecraft:hasDescription "A fictional town in Massachusetts, home to Miskatonic University"@en ;
+    lovecraft:hasName "Arkham"@en ;
+    lovecraft:isPartOf instance:Massachusetts .
+
+instance:BookOfEibon a owl:NamedIndividual,
+        lovecraft:Book ;
+    lovecraft:createdBy instance:Eibon ;
+    lovecraft:hasDescription "A grimoire of Hyperborean origin"@en ;
+    lovecraft:hasName "BookOfEibon"@en .
+
+instance:Light a lovecraft:Concept .
+
+instance:Massachusetts a lovecraft:Location .
+
+instance:Reality a lovecraft:Concept .
+
+instance:TheSea a lovecraft:Concept,
+        lovecraft:Location .
+
+instance:TheUnknown a lovecraft:Concept .
+
+instance:YogSothoth a owl:NamedIndividual,
+        lovecraft:Entity,
+        lovecraft:OuterGod ;
+    lovecraft:controls instance:Knowledge,
+        instance:Space,
+        instance:Time ;
+    lovecraft:describedIn instance:Necronomicon ;
+    lovecraft:hasDescription "The all-in-one and one-in-all, key and gate of the universe"@en ;
+    lovecraft:hasName "YogSothoth"@en .
+
+instance:Dagon a owl:NamedIndividual,
+        lovecraft:GreatOldOne ;
+    lovecraft:controls instance:DeepOnes,
+        instance:TheSea ;
+    lovecraft:fears instance:LandDwellers ;
+    lovecraft:hasDescription "God of the Deep Ones"@en ;
+    lovecraft:hasName "Dagon"@en .
+
+instance:Space a lovecraft:Concept .
+
+instance:Time a lovecraft:Concept .
+
+lovecraft:Artifact a owl:Class ;
+    rdfs:label "Artifact"@en ;
+    rdfs:comment "Magical or powerful objects"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:Book a owl:Class ;
+    rdfs:label "Book"@en ;
+    rdfs:comment "Forbidden tomes and manuscripts"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:Human a owl:Class ;
+    rdfs:label "Human"@en ;
+    rdfs:comment "Human characters in the mythos"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:OuterGod a owl:Class ;
+    rdfs:label "OuterGod"@en ;
+    rdfs:comment "Entities from outside the universe"@en ;
+    rdfs:subClassOf lovecraft:Deity,
+        lovecraft:Entity .
+
+instance:Madness a lovecraft:Concept .
+
+instance:Necronomicon a owl:NamedIndividual,
+        lovecraft:Book,
+        lovecraft:Resource ;
+    lovecraft:createdBy instance:AbdulAlhazred ;
+    lovecraft:hasDescription "The mad Arab Abdul Alhazred's infamous grimoire"@en ;
+    lovecraft:hasName "Necronomicon"@en ;
+    lovecraft:hasResourceType "Grimoire"@en ;
+    lovecraft:hasResourceValue "The most dangerous book in existence"@en .
+
+lovecraft:GreatOldOne a owl:Class ;
+    rdfs:label "GreatOldOne"@en ;
+    rdfs:comment "Powerful ancient beings, often malevolent"@en ;
+    rdfs:subClassOf lovecraft:Deity,
+        lovecraft:Entity .
+
+lovecraft:Resource a owl:Class ;
+    rdfs:label "Resource"@en ;
+    rdfs:comment "A generic resource in the Lovecraft universe"@en .
+
+lovecraft:Deity a owl:Class ;
+    rdfs:label "Deity"@en ;
+    rdfs:comment "A cosmic deity or god-like being"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:Creature a owl:Class ;
+    rdfs:label "Creature"@en ;
+    rdfs:comment "Non-divine beings from the mythos"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:Location a owl:Class ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "Places in the Lovecraft universe"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:Concept a owl:Class ;
+    rdfs:label "Concept"@en ;
+    rdfs:comment "Abstract concepts in the mythos"@en ;
+    rdfs:subClassOf lovecraft:Entity .
+
+lovecraft:Entity a owl:Class ;
+    rdfs:label "Entity"@en ;
+    rdfs:comment "Base class for all Lovecraftian entities"@en .
+

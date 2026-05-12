@@ -72,7 +72,7 @@ public class LovecraftOntology {
             model.createLiteral("Lovecraft Ontology Project", "en"));
         ontology.addProperty(
             ResourceFactory.createProperty(DCTERMS_NS + "date"), 
-            model.createLiteral("2024-01-01", XSD.date));
+            model.createTypedLiteral("2024-01-01", XSD.NS + "date"));
         ontology.addProperty(OWL.versionInfo, 
             model.createLiteral("1.0.0"));
 

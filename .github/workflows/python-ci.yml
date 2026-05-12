@@ -43,8 +43,7 @@ jobs:
           python lovecraft_ontology.py
 
       - name: Verify generated files
-        working-directory: python
         run: |
-          test -f lovecraft_mythos.ttl
-          test -f lovecraft_mythos_simple.ttl
+          test -f python/lovecraft_mythos.ttl
+          test -f python/lovecraft_mythos_simple.ttl
           echo "Turtle files generated successfully"

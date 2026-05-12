@@ -1,0 +1,60 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'java/**'
+      - '.github/workflows/java-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'java/**'
+      - '.github/workflows/java-ci.yml'
+
+jobs:
+  build-and-test:
+    name: Build and Test Java Implementation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('java/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Build with Maven
+        working-directory: java
+        run: mvn clean compile
+
+      - name: Run tests
+        working-directory: java
+        run: mvn test
+
+      - name: Package
+        working-directory: java
+        run: mvn package -DskipTests
+
+      - name: Verify generated files
+        working-directory: java
+        run: |
+          test -f lovecraft_mythos.ttl
+          test -f lovecraft_mythos_simple.ttl
+          echo "Turtle files generated successfully"
+
+      - name: Verify JAR file
+        working-directory: java
+        run: |
+          test -f target/lovecraft-ontology-1.0.0.jar
+          echo "JAR file built successfully"

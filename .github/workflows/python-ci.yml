@@ -38,9 +38,8 @@ jobs:
           python -m unittest discover -v -s . -p 'test_*.py'
 
       - name: Generate ontology files
-        working-directory: python
         run: |
-          python lovecraft_ontology.py
+          cd python && python lovecraft_ontology.py
 
       - name: Verify generated files
         run: |

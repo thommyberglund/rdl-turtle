@@ -468,11 +468,11 @@ def main():
     print("Creating Lovecraft Mythos Ontology in Turtle format...")
     ontology = create_lovecraft_ontology()
     
-    # Spara som Turtle-fil (relativ sökväg)
-    save_ontology(ontology, "python/lovecraft_mythos.ttl")
+    # Spara som Turtle-fil (relativ sökväg från projektroten)
+    save_ontology(ontology, "lovecraft_mythos.ttl")
     
     # Spara en förenklad version för läsbarhet
-    save_ontology(ontology, "python/lovecraft_mythos_simple.ttl")
+    save_ontology(ontology, "lovecraft_mythos_simple.ttl")
     
     print("Done! The ontology has been generated in Turtle format.")
 

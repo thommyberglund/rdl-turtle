@@ -66,6 +66,10 @@ venv.bak/
 *.swo
 *~
 
+# Test files
+*.pyc
+__pycache__/
+
 # Java
 *.class
 *.jar

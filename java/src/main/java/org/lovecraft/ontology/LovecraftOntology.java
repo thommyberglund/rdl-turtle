@@ -72,7 +72,7 @@ public class LovecraftOntology {
             model.createLiteral("Lovecraft Ontology Project", "en"));
         ontology.addProperty(
             ResourceFactory.createProperty(DCTERMS_NS + "date"), 
-            model.createTypedLiteral("2024-01-01", XSD.date));
+            model.createLiteral("2024-01-01", XSD.date));
         ontology.addProperty(OWL.versionInfo, 
             model.createLiteral("1.0.0"));
 
@@ -332,7 +332,7 @@ public class LovecraftOntology {
         hasResourceType.addProperty(RDFS.comment, 
             model.createLiteral("The type of a resource", "en"));
         hasResourceType.addProperty(RDFS.domain, resourceClass);
-        hasResourceType.addProperty(RDFS.range, XSDDatatype.XSDstring);
+        hasResourceType.addProperty(RDFS.range, XSD.NS + "string");
 
         // RDL Property for "hasResourceValue"
         Property hasResourceValue = model.createProperty(LOVE_NS + "hasResourceValue");
@@ -341,7 +341,7 @@ public class LovecraftOntology {
         hasResourceValue.addProperty(RDFS.comment, 
             model.createLiteral("The value of a resource", "en"));
         hasResourceValue.addProperty(RDFS.domain, resourceClass);
-        hasResourceValue.addProperty(RDFS.range, XSDDatatype.XSDstring);
+        hasResourceValue.addProperty(RDFS.range, XSD.NS + "string");
 
         // Exempel på RDL-resurser
         Resource necronomicon = model.createResource(LOVE_INST_NS + "Necronomicon");

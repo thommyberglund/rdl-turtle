@@ -5,7 +5,6 @@ import org.apache.jena.vocabulary.*;
 import org.apache.jena.ontology.*;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
-import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -73,7 +72,7 @@ public class LovecraftOntology {
             model.createLiteral("Lovecraft Ontology Project", "en"));
         ontology.addProperty(
             ResourceFactory.createProperty(DCTERMS_NS + "date"), 
-            model.createTypedLiteral("2024-01-01", XSDDatatype.XSDdate));
+            model.createTypedLiteral("2024-01-01", XSD.date));
         ontology.addProperty(OWL.versionInfo, 
             model.createLiteral("1.0.0"));
 
@@ -202,7 +201,7 @@ public class LovecraftOntology {
             prop.addProperty(RDFS.label, model.createLiteral(propName, "en"));
             prop.addProperty(RDFS.comment, model.createLiteral(description, "en"));
             prop.addProperty(RDFS.domain, model.createResource(LOVE_NS + "Entity"));
-            prop.addProperty(RDFS.range, XSDDatatype.XSDstring);
+            prop.addProperty(RDFS.range, XSD.NS + "string");
         }
 
         // --- Individer (OWL Individuals) ---
@@ -366,7 +365,7 @@ public class LovecraftOntology {
                                    String[] controls, String[] worshippedBy) {
         Resource deity = model.createResource(LOVE_INST_NS + name);
         deity.addProperty(RDF.type, model.createResource(typeUri));
-        deity.addProperty(RDF.type, OWL.NamedIndividual);
+        deity.addProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual"));
         deity.addProperty(model.createProperty(LOVE_NS + "hasName"), 
             model.createLiteral(name, "en"));
         deity.addProperty(model.createProperty(LOVE_NS + "hasDescription"), 
@@ -405,7 +404,7 @@ public class LovecraftOntology {
                                       String locatedIn, String fears, String controls) {
         Resource creature = model.createResource(LOVE_INST_NS + name);
         creature.addProperty(RDF.type, model.createResource(typeUri));
-        creature.addProperty(RDF.type, OWL.NamedIndividual);
+        creature.addProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual"));
         creature.addProperty(model.createProperty(LOVE_NS + "hasName"), 
             model.createLiteral(name, "en"));
         creature.addProperty(model.createProperty(LOVE_NS + "hasDescription"), 
@@ -447,7 +446,7 @@ public class LovecraftOntology {
                                        String description, String locatedIn) {
         Resource location = model.createResource(LOVE_INST_NS + name);
         location.addProperty(RDF.type, model.createResource(LOVE_NS + "Location"));
-        location.addProperty(RDF.type, OWL.NamedIndividual);
+        location.addProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual"));
         location.addProperty(model.createProperty(LOVE_NS + "hasName"), 
             model.createLiteral(name, "en"));
         location.addProperty(model.createProperty(LOVE_NS + "hasDescription"), 
@@ -469,7 +468,7 @@ public class LovecraftOntology {
                                       String[] describes) {
         Resource artifact = model.createResource(LOVE_INST_NS + name);
         artifact.addProperty(RDF.type, model.createResource(typeUri));
-        artifact.addProperty(RDF.type, OWL.NamedIndividual);
+        artifact.addProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual"));
         artifact.addProperty(model.createProperty(LOVE_NS + "hasName"), 
             model.createLiteral(name, "en"));
         artifact.addProperty(model.createProperty(LOVE_NS + "hasDescription"), 
@@ -498,7 +497,7 @@ public class LovecraftOntology {
                                     String locatedIn) {
         Resource human = model.createResource(LOVE_INST_NS + name);
         human.addProperty(RDF.type, model.createResource(LOVE_NS + "Human"));
-        human.addProperty(RDF.type, OWL.NamedIndividual);
+        human.addProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual"));
         
         // Fix för H.P. Lovecraft
         String displayName = name.equals("HPLovecraft") ? "H.P.Lovecraft" : name;

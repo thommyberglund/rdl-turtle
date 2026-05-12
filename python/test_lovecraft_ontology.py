@@ -75,19 +75,24 @@ class TestLovecraftOntology(unittest.TestCase):
 
     def test_object_properties_exist(self):
         """Testar att Object Properties skapas korrekt."""
-        property_names = [
-            "worships", "fears", "controls", "locatedIn", 
-            "hasPower", "isPartOf", "createdBy", "describedIn"
-        ]
+        # Mappning från property-namn till förväntad label
+        property_labels = {
+            "worships": "worships",
+            "fears": "fears",
+            "controls": "controls",
+            "locatedIn": "located in",
+            "hasPower": "has power",
+            "isPartOf": "is part of",
+            "createdBy": "created by",
+            "describedIn": "described in"
+        }
         
-        for prop_name in property_names:
+        for prop_name, expected_label in property_labels.items():
             prop = self.LOVE[prop_name]
             self.assertTrue((prop, RDF.type, OWL.ObjectProperty) in self.graph, 
                           f"Property {prop_name} should exist")
-            # locatedIn har label "located in" (med mellanslag)
-            expected_label = "located in" if prop_name == "locatedIn" else prop_name
             self.assertTrue((prop, RDFS.label, Literal(expected_label, lang="en")) in self.graph, 
-                          f"Property {prop_name} should have label")
+                          f"Property {prop_name} should have label '{expected_label}'")
 
     def test_datatype_properties_exist(self):
         """Testar att Datatype Properties skapas korrekt."""

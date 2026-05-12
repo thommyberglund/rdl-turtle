@@ -47,8 +47,8 @@ public class LovecraftOntology {
         createOntology(model);
         
         // Spara till Turtle-filer
-        saveModel(model, "java/lovecraft_mythos.ttl");
-        saveModel(model, "java/lovecraft_mythos_simple.ttl");
+        saveModel(model, "lovecraft_mythos.ttl");
+        saveModel(model, "lovecraft_mythos_simple.ttl");
         
         System.out.println("Done! The ontology has been generated in Turtle format.");
     }

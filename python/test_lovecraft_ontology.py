@@ -84,7 +84,9 @@ class TestLovecraftOntology(unittest.TestCase):
             prop = self.LOVE[prop_name]
             self.assertTrue((prop, RDF.type, OWL.ObjectProperty) in self.graph, 
                           f"Property {prop_name} should exist")
-            self.assertTrue((prop, RDFS.label, Literal(prop_name, lang="en")) in self.graph, 
+            # locatedIn har label "located in" (med mellanslag)
+            expected_label = "located in" if prop_name == "locatedIn" else prop_name
+            self.assertTrue((prop, RDFS.label, Literal(expected_label, lang="en")) in self.graph, 
                           f"Property {prop_name} should have label")
 
     def test_datatype_properties_exist(self):

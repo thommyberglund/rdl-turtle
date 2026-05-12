@@ -3,9 +3,9 @@ package org.lovecraft.ontology;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.*;
 import org.apache.jena.ontology.*;
-import org.apache.jena.util.FileManager;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,11 +25,7 @@ public class LovecraftOntology {
     private static final String LOVE_INST_NS = "https://lovecraft.example.org/instance#";
     private static final String DCTERMS_NS = "http://purl.org/dc/terms/";
     private static final String SKOS_NS = "http://www.w3.org/2004/02/skos/core#";
-
-    private static final Resource LOVE = ResourceFactory.createResource(LOVE_NS);
-    private static final Resource LOVE_INST = ResourceFactory.createResource(LOVE_INST_NS);
-    private static final Resource DCTERMS = ResourceFactory.createResource(DCTERMS_NS);
-    private static final Resource SKOS = ResourceFactory.createResource(SKOS_NS);
+    private static final String FOAF_NS = "http://xmlns.com/foaf/0.1/";
 
     public static void main(String[] args) {
         System.out.println("Creating Lovecraft Mythos Ontology in Turtle format (Java)...");
@@ -43,10 +39,10 @@ public class LovecraftOntology {
         model.setNsPrefix("owl", OWL.NS);
         model.setNsPrefix("rdf", RDF.uri);
         model.setNsPrefix("rdfs", RDFS.uri);
-        model.setNsPrefix("xsd", XSD.uri);
+        model.setNsPrefix("xsd", XSD.NS);
         model.setNsPrefix("dcterms", DCTERMS_NS);
         model.setNsPrefix("skos", SKOS_NS);
-        model.setNsPrefix("foaf", FOAF.uri);
+        model.setNsPrefix("foaf", FOAF_NS);
 
         // Skapa ontologin
         createOntology(model);
@@ -61,19 +57,23 @@ public class LovecraftOntology {
     /**
      * Skapar ontologin med klasser, egenskaper och individer.
      */
-    private static void createOntology(Model model) {
+    public static void createOntology(Model model) {
         // --- OWL Ontology Header ---
         Resource ontology = model.createResource(LOVE_NS + "Ontology");
         ontology.addProperty(RDF.type, OWL.Ontology);
-        ontology.addProperty(DCTERMS.property("title"), 
+        ontology.addProperty(
+            ResourceFactory.createProperty(DCTERMS_NS + "title"), 
             model.createLiteral("Lovecraft Mythos Ontology", "en"));
-        ontology.addProperty(DCTERMS.property("description"), 
+        ontology.addProperty(
+            ResourceFactory.createProperty(DCTERMS_NS + "description"), 
             model.createLiteral("An OWL ontology describing the entities, concepts, and relationships " +
                                "in H.P. Lovecraft's Cthulhu Mythos.", "en"));
-        ontology.addProperty(DCTERMS.property("creator"), 
+        ontology.addProperty(
+            ResourceFactory.createProperty(DCTERMS_NS + "creator"), 
             model.createLiteral("Lovecraft Ontology Project", "en"));
-        ontology.addProperty(DCTERMS.property("date"), 
-            model.createTypedLiteral("2024-01-01", XSD.date));
+        ontology.addProperty(
+            ResourceFactory.createProperty(DCTERMS_NS + "date"), 
+            model.createTypedLiteral("2024-01-01", XSDDatatype.XSDdate));
         ontology.addProperty(OWL.versionInfo, 
             model.createLiteral("1.0.0"));
 
@@ -106,12 +106,14 @@ public class LovecraftOntology {
         }
 
         // Specifika subklasser
-        model.createResource(LOVE_NS + "GreatOldOne")
-            .addProperty(RDFS.subClassOf, model.createResource(LOVE_NS + "Deity"));
-        model.createResource(LOVE_NS + "OuterGod")
-            .addProperty(RDFS.subClassOf, model.createResource(LOVE_NS + "Deity"));
-        model.createResource(LOVE_NS + "ElderGod")
-            .addProperty(RDFS.subClassOf, model.createResource(LOVE_NS + "Deity"));
+        Resource greatOldOne = model.createResource(LOVE_NS + "GreatOldOne");
+        greatOldOne.addProperty(RDFS.subClassOf, model.createResource(LOVE_NS + "Deity"));
+        
+        Resource outerGod = model.createResource(LOVE_NS + "OuterGod");
+        outerGod.addProperty(RDFS.subClassOf, model.createResource(LOVE_NS + "Deity"));
+        
+        Resource elderGod = model.createResource(LOVE_NS + "ElderGod");
+        elderGod.addProperty(RDFS.subClassOf, model.createResource(LOVE_NS + "Deity"));
 
         // --- Egenskaper (OWL Properties) ---
         Map<String, Map<String, String>> properties = new HashMap<>();
@@ -149,7 +151,7 @@ public class LovecraftOntology {
         hasPower.put("label", "has power");
         hasPower.put("comment", "The powers or abilities of an entity");
         hasPower.put("domain", LOVE_NS + "Entity");
-        hasPower.put("range", XSD.uri + "string");
+        hasPower.put("range", XSD.NS + "string");
         properties.put("hasPower", hasPower);
 
         Map<String, String> isPartOf = new HashMap<>();
@@ -200,7 +202,7 @@ public class LovecraftOntology {
             prop.addProperty(RDFS.label, model.createLiteral(propName, "en"));
             prop.addProperty(RDFS.comment, model.createLiteral(description, "en"));
             prop.addProperty(RDFS.domain, model.createResource(LOVE_NS + "Entity"));
-            prop.addProperty(RDFS.range, XSD.xstring);
+            prop.addProperty(RDFS.range, XSDDatatype.XSDstring);
         }
 
         // --- Individer (OWL Individuals) ---
@@ -331,7 +333,7 @@ public class LovecraftOntology {
         hasResourceType.addProperty(RDFS.comment, 
             model.createLiteral("The type of a resource", "en"));
         hasResourceType.addProperty(RDFS.domain, resourceClass);
-        hasResourceType.addProperty(RDFS.range, XSD.xstring);
+        hasResourceType.addProperty(RDFS.range, XSDDatatype.XSDstring);
 
         // RDL Property for "hasResourceValue"
         Property hasResourceValue = model.createProperty(LOVE_NS + "hasResourceValue");
@@ -340,7 +342,7 @@ public class LovecraftOntology {
         hasResourceValue.addProperty(RDFS.comment, 
             model.createLiteral("The value of a resource", "en"));
         hasResourceValue.addProperty(RDFS.domain, resourceClass);
-        hasResourceValue.addProperty(RDFS.range, XSD.xstring);
+        hasResourceValue.addProperty(RDFS.range, XSDDatatype.XSDstring);
 
         // Exempel på RDL-resurser
         Resource necronomicon = model.createResource(LOVE_INST_NS + "Necronomicon");

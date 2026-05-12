@@ -31,7 +31,7 @@ public class LovecraftOntologyTest {
         model.setNsPrefix("owl", OWL.NS);
         model.setNsPrefix("rdf", RDF.uri);
         model.setNsPrefix("rdfs", RDFS.uri);
-        model.setNsPrefix("xsd", XSD.uri);
+        model.setNsPrefix("xsd", XSD.NS);
     }
 
     @AfterEach
@@ -184,7 +184,7 @@ public class LovecraftOntologyTest {
         for (String individualName : individualNames) {
             Resource individual = model.getResource("https://lovecraft.example.org/instance#" + individualName);
             assertNotNull(individual, "Individual " + individualName + " should exist");
-            assertTrue(individual.hasProperty(RDF.type, OWL.NamedIndividual), 
+            assertTrue(individual.hasProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual")), 
                 individualName + " should be a NamedIndividual");
         }
     }

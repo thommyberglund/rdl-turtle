@@ -47,10 +47,9 @@ jobs:
         run: mvn package -DskipTests
 
       - name: Verify generated files
-        working-directory: java
         run: |
-          test -f lovecraft_mythos.ttl
-          test -f lovecraft_mythos_simple.ttl
+          test -f java/lovecraft_mythos.ttl
+          test -f java/lovecraft_mythos_simple.ttl
           echo "Turtle files generated successfully"
 
       - name: Verify JAR file

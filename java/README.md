@@ -6,24 +6,26 @@ Denna katalog innehåller en **Java-implementation** som genererar en **OWL-onto
 
 ---
 
-## 📁 Innehåll
+## Innehåll
 
 ```
 java/
 ├── README.md                    # Denna fil
+├── GENERATOR_README.md         # Dokumentation för OntologyToJavaGenerator
 ├── .gitignore                   # Git-ignorera regler
 ├── pom.xml                     # Maven-konfiguration
 └── src/
     ├── main/java/org/lovecraft/ontology/
-    │   ├── Main.java           # Huvudklass för att starta programmet
-    │   └── LovecraftOntology.java # Huvudimplementering
+    │   ├── Main.java                      # Huvudklass för att starta programmet
+    │   ├── LovecraftOntology.java         # Huvudimplementering (OWL → Turtle)
+    │   └── OntologyToJavaGenerator.java    # Generator (Turtle → Java klasser)
     └── test/java/org/lovecraft/ontology/
         └── LovecraftOntologyTest.java # Enhetstester
 ```
 
 ---
 
-## 🛠 Beroenden
+## Beroenden
 
 Projektet använder följande bibliotek:
 - **[Apache Jena](https://jena.apache.org/)** - RDF-bibliotek för Java
@@ -31,7 +33,7 @@ Projektet använder följande bibliotek:
 
 ---
 
-## 🚀 Installation
+## Installation
 
 ### 1. Förutsättningar
 
@@ -50,7 +52,7 @@ mvn dependency:resolve
 
 ---
 
-## 🏃 Kör programmet
+## Kör programmet
 
 ### Kompilerar och kör
 
@@ -82,7 +84,7 @@ Detta kommer att generera två Turtle-filer:
 
 ---
 
-## ✅ Kör tester
+## Kör tester
 
 ### Kör alla tester
 
@@ -108,7 +110,7 @@ mvn test -X
 
 ---
 
-## 📊 Tester som inkluderas
+## Tester som inkluderas
 
 | Testklass | Beskrivning |
 |-----------|--------------|
@@ -116,18 +118,18 @@ mvn test -X
 
 ### Testtäckning
 
-- ✅ Ontologiheader och metadata
-- ✅ Klasshierarki (OWL Classes)
-- ✅ Objekt- och Datatype Properties
-- ✅ Individer (Cthulhu, Necronomicon, etc.)
-- ✅ RDL-resurser
-- ✅ Relationer mellan entiteter
-- ✅ Serialisering till Turtle-format
-- ✅ Platser och artefakter
+- Ontologiheader och metadata
+- Klasshierarki (OWL Classes)
+- Objekt- och Datatype Properties
+- Individer (Cthulhu, Necronomicon, etc.)
+- RDL-resurser
+- Relationer mellan entiteter
+- Serialisering till Turtle-format
+- Platser och artefakter
 
 ---
 
-## 🔧 API-Referens
+## API-Referens
 
 ### `LovecraftOntology`
 
@@ -167,14 +169,51 @@ Sparar en RDF-modell till en Turtle-fil.
 
 ---
 
-## 🌌 Ontologins Struktur
+## Omvänd Generator: Turtle → Java
+
+> **Nytt!** Generator som skapar Java-klasser från Turtle-filer
+
+Projektet inkluderar nu `OntologyToJavaGenerator` som gör det omvända: läser en Turtle/OWL-ontologi och genererar Java-klasser.
+
+### Snabbstart
+
+```bash
+# Generera Java-klasser från en Turtle-fil
+mvn exec:java -Dexec.mainClass="org.lovecraft.ontology.OntologyToJavaGenerator" -Dexec.args="lovecraft_mythos.ttl"
+```
+
+### Vad genereras?
+
+- **Java-klasser** för varje OWL-klass (Entity, Deity, GreatOldOne, etc.)
+- **OntologyFactory** med URI-konstanter för alla individer
+- Fullständig Javadoc-dokumentation
+- `equals()`, `hashCode()`, `toString()` metoder
+
+### Exempel på användning
+
+```java
+import org.lovecraft.ontology.generated.*;
+
+// Skapa instanser
+Entity entity = new Entity(OntologyFactory.CTHULHU_URI);
+
+// Använda med Jena
+Model model = OntologyFactory.createModel();
+Resource cthulhu = OntologyFactory.createJenaResource(OntologyFactory.CTHULHU_URI);
+```
+
+Se [GENERATOR_README.md](./GENERATOR_README.md) för full dokumentation.
+
+---
+
+## Ontologins Struktur
 
 ### Namnrymder
 
 | Prefix | URI |
 |--------|-----|
-| `lovecraft:` | `https://lovecraft.example.org/ontology#` |
-| `instance:` | `https://lovecraft.example.org/instance#` |
+| `lovecraft:` | `https://lovecraft.frosteby.eu/ontology#` |
+| `instance:` | `https://lovecraft.frosteby.eu/instance#` |
 | `owl:` | `http://www.w3.org/2002/07/owl#` |
 | `rdf:` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` |
 | `rdfs:` | `http://www.w3.org/2000/01/rdf-schema#` |
@@ -212,7 +251,7 @@ Entity
 
 ---
 
-## 📝 Exempel: Använda ontologin
+## Exempel: Använda ontologin
 
 ### Ladda och fråga ontologin
 
@@ -237,16 +276,16 @@ import org.apache.jena.vocabulary.*;
 Model model = ModelFactory.createDefaultModel();
 
 // Lägg till namnrymder
-model.setNsPrefix("lovecraft", "https://lovecraft.example.org/ontology#");
-model.setNsPrefix("instance", "https://lovecraft.example.org/instance#");
+model.setNsPrefix("lovecraft", "https://lovecraft.frosteby.eu/ontology#");
+model.setNsPrefix("instance", "https://lovecraft.frosteby.eu/instance#");
 
 // Lägg till en ny klass
-Resource newClass = model.createResource("https://lovecraft.example.org/ontology#NewClass");
+Resource newClass = model.createResource("https://lovecraft.frosteby.eu/ontology#NewClass");
 newClass.addProperty(RDF.type, OWL.Class);
 newClass.addProperty(RDFS.label, model.createLiteral("New Class", "en"));
 
 // Lägg till en ny individ
-Resource newIndividual = model.createResource("https://lovecraft.example.org/instance#NewIndividual");
+Resource newIndividual = model.createResource("https://lovecraft.frosteby.eu/instance#NewIndividual");
 newIndividual.addProperty(RDF.type, OWL.NamedIndividual);
 newIndividual.addProperty(RDF.type, newClass);
 ```
@@ -261,8 +300,8 @@ Model model = FileManager.get().loadModel("lovecraft_mythos.ttl");
 
 // Skapa en SPARQL-fråga
 String queryString = 
-    "PREFIX lovecraft: <https://lovecraft.example.org/ontology#> " +
-    "PREFIX instance: <https://lovecraft.example.org/instance#> " +
+    "PREFIX lovecraft: <https://lovecraft.frosteby.eu/ontology#> " +
+    "PREFIX instance: <https://lovecraft.frosteby.eu/instance#> " +
     "SELECT ?deity WHERE { ?deity a lovecraft:GreatOldOne . }";
 
 // Kör frågan
@@ -282,7 +321,7 @@ qexec.close();
 
 ---
 
-## 🔄 Uppdatera beroenden
+## Uppdatera beroenden
 
 Om du vill uppdatera beroendena:
 
@@ -296,7 +335,7 @@ mvn versions:use-latest-versions
 
 ---
 
-## 📦 Maven Kommandon
+## Maven Kommandon
 
 | Kommando | Beskrivning |
 |----------|--------------|
@@ -310,13 +349,13 @@ mvn versions:use-latest-versions
 
 ---
 
-## 📜 Licens
+## Licens
 
 Detta projekt är öppen källkod och tillgängligt under [MIT-licensen](../LICENSE).
 
 ---
 
-## 🤝 Bidrag
+## Bidrag
 
 Bidrag är välkomna! Förslag på förbättringar:
 - Lägga till fler Lovecraft-entiteter
@@ -327,13 +366,13 @@ Bidrag är välkomna! Förslag på förbättringar:
 
 ---
 
-## 📞 Support
+## Support
 
 För frågor om Java-implementationen, se [huvud-dokumentationen](../README.md).
 
 ---
 
-## 🔗 Länkar
+## Länkar
 
 - [Apache Jena Dokumentation](https://jena.apache.org/documentation/)
 - [JUnit 5 Dokumentation](https://junit.org/junit5/docs/current/user-guide/)

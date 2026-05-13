@@ -26,8 +26,8 @@ public class LovecraftOntologyTest {
         model = ModelFactory.createDefaultModel();
         
         // Lägg till namnrymder
-        model.setNsPrefix("lovecraft", "https://lovecraft.example.org/ontology#");
-        model.setNsPrefix("instance", "https://lovecraft.example.org/instance#");
+        model.setNsPrefix("lovecraft", "https://lovecraft.frosteby.eu/ontology#");
+        model.setNsPrefix("instance", "https://lovecraft.frosteby.eu/instance#");
         model.setNsPrefix("owl", OWL.NS);
         model.setNsPrefix("rdf", RDF.uri);
         model.setNsPrefix("rdfs", RDFS.uri);
@@ -50,9 +50,9 @@ public class LovecraftOntologyTest {
         LovecraftOntology.createOntology(model);
         
         // Verifiera att namnrymder är korrekt inställda
-        assertEquals("https://lovecraft.example.org/ontology#", 
+        assertEquals("https://lovecraft.frosteby.eu/ontology#", 
             model.getNsPrefixURI("lovecraft"));
-        assertEquals("https://lovecraft.example.org/instance#", 
+        assertEquals("https://lovecraft.frosteby.eu/instance#", 
             model.getNsPrefixURI("instance"));
         assertEquals(OWL.NS, model.getNsPrefixURI("owl"));
         assertEquals(RDF.uri, model.getNsPrefixURI("rdf"));
@@ -67,7 +67,7 @@ public class LovecraftOntologyTest {
         LovecraftOntology.createOntology(model);
         
         // Hämta ontologin
-        Resource ontology = model.getResource("https://lovecraft.example.org/ontology#Ontology");
+        Resource ontology = model.getResource("https://lovecraft.frosteby.eu/ontology#Ontology");
         
         // Verifiera att ontologin finns och har korrekt typ
         assertNotNull(ontology);
@@ -99,7 +99,7 @@ public class LovecraftOntologyTest {
         };
         
         for (String className : classNames) {
-            Resource cls = model.getResource("https://lovecraft.example.org/ontology#" + className);
+            Resource cls = model.getResource("https://lovecraft.frosteby.eu/ontology#" + className);
             assertNotNull(cls, "Class " + className + " should exist");
             assertTrue(cls.hasProperty(RDF.type, OWL.Class), 
                 className + " should be an OWL Class");
@@ -113,11 +113,11 @@ public class LovecraftOntologyTest {
     public void testClassHierarchy() {
         LovecraftOntology.createOntology(model);
         
-        Resource entity = model.getResource("https://lovecraft.example.org/ontology#Entity");
-        Resource deity = model.getResource("https://lovecraft.example.org/ontology#Deity");
-        Resource greatOldOne = model.getResource("https://lovecraft.example.org/ontology#GreatOldOne");
-        Resource outerGod = model.getResource("https://lovecraft.example.org/ontology#OuterGod");
-        Resource elderGod = model.getResource("https://lovecraft.example.org/ontology#ElderGod");
+        Resource entity = model.getResource("https://lovecraft.frosteby.eu/ontology#Entity");
+        Resource deity = model.getResource("https://lovecraft.frosteby.eu/ontology#Deity");
+        Resource greatOldOne = model.getResource("https://lovecraft.frosteby.eu/ontology#GreatOldOne");
+        Resource outerGod = model.getResource("https://lovecraft.frosteby.eu/ontology#OuterGod");
+        Resource elderGod = model.getResource("https://lovecraft.frosteby.eu/ontology#ElderGod");
         
         // Deity är subklass till Entity
         assertTrue(deity.hasProperty(RDFS.subClassOf, entity));
@@ -141,7 +141,7 @@ public class LovecraftOntologyTest {
         };
         
         for (String propName : propertyNames) {
-            Property prop = model.getProperty("https://lovecraft.example.org/ontology#" + propName);
+            Property prop = model.getProperty("https://lovecraft.frosteby.eu/ontology#" + propName);
             assertNotNull(prop, "Property " + propName + " should exist");
             assertTrue(prop.hasProperty(RDF.type, OWL.ObjectProperty), 
                 propName + " should be an ObjectProperty");
@@ -160,7 +160,7 @@ public class LovecraftOntologyTest {
         };
         
         for (String propName : propertyNames) {
-            Property prop = model.getProperty("https://lovecraft.example.org/ontology#" + propName);
+            Property prop = model.getProperty("https://lovecraft.frosteby.eu/ontology#" + propName);
             assertNotNull(prop, "Datatype property " + propName + " should exist");
             assertTrue(prop.hasProperty(RDF.type, OWL.DatatypeProperty), 
                 propName + " should be a DatatypeProperty");
@@ -182,7 +182,7 @@ public class LovecraftOntologyTest {
         };
         
         for (String individualName : individualNames) {
-            Resource individual = model.getResource("https://lovecraft.example.org/instance#" + individualName);
+            Resource individual = model.getResource("https://lovecraft.frosteby.eu/instance#" + individualName);
             assertNotNull(individual, "Individual " + individualName + " should exist");
             assertTrue(individual.hasProperty(RDF.type, model.createResource(OWL.NS + "NamedIndividual")), 
                 individualName + " should be a NamedIndividual");
@@ -196,31 +196,31 @@ public class LovecraftOntologyTest {
     public void testCthulhuProperties() {
         LovecraftOntology.createOntology(model);
         
-        Resource cthulhu = model.getResource("https://lovecraft.example.org/instance#Cthulhu");
+        Resource cthulhu = model.getResource("https://lovecraft.frosteby.eu/instance#Cthulhu");
         
         // Cthulhu ska vara en GreatOldOne
-        Resource greatOldOne = model.getResource("https://lovecraft.example.org/ontology#GreatOldOne");
+        Resource greatOldOne = model.getResource("https://lovecraft.frosteby.eu/ontology#GreatOldOne");
         assertTrue(cthulhu.hasProperty(RDF.type, greatOldOne));
         
         // Cthulhu ska ha ett namn
-        Property hasName = model.getProperty("https://lovecraft.example.org/ontology#hasName");
+        Property hasName = model.getProperty("https://lovecraft.frosteby.eu/ontology#hasName");
         assertTrue(cthulhu.hasProperty(hasName));
         
         // Cthulhu ska ha en beskrivning
-        Property hasDescription = model.getProperty("https://lovecraft.example.org/ontology#hasDescription");
+        Property hasDescription = model.getProperty("https://lovecraft.frosteby.eu/ontology#hasDescription");
         assertTrue(cthulhu.hasProperty(hasDescription));
         
         // Cthulhu ska kontrollera Dreams och Madness
-        Property controls = model.getProperty("https://lovecraft.example.org/ontology#controls");
-        Resource dreams = model.getResource("https://lovecraft.example.org/instance#Dreams");
-        Resource madness = model.getResource("https://lovecraft.example.org/instance#Madness");
+        Property controls = model.getProperty("https://lovecraft.frosteby.eu/ontology#controls");
+        Resource dreams = model.getResource("https://lovecraft.frosteby.eu/instance#Dreams");
+        Resource madness = model.getResource("https://lovecraft.frosteby.eu/instance#Madness");
         assertTrue(cthulhu.hasProperty(controls, dreams));
         assertTrue(cthulhu.hasProperty(controls, madness));
         
         // Cthulhu ska frukta The Sun och Light
-        Property fears = model.getProperty("https://lovecraft.example.org/ontology#fears");
-        Resource theSun = model.getResource("https://lovecraft.example.org/instance#TheSun");
-        Resource light = model.getResource("https://lovecraft.example.org/instance#Light");
+        Property fears = model.getProperty("https://lovecraft.frosteby.eu/ontology#fears");
+        Resource theSun = model.getResource("https://lovecraft.frosteby.eu/instance#TheSun");
+        Resource light = model.getResource("https://lovecraft.frosteby.eu/instance#Light");
         assertTrue(cthulhu.hasProperty(fears, theSun));
         assertTrue(cthulhu.hasProperty(fears, light));
     }
@@ -232,20 +232,20 @@ public class LovecraftOntologyTest {
     public void testNecronomiconRelations() {
         LovecraftOntology.createOntology(model);
         
-        Resource necronomicon = model.getResource("https://lovecraft.example.org/instance#Necronomicon");
+        Resource necronomicon = model.getResource("https://lovecraft.frosteby.eu/instance#Necronomicon");
         
         // Necronomicon ska vara en Book
-        Resource book = model.getResource("https://lovecraft.example.org/ontology#Book");
+        Resource book = model.getResource("https://lovecraft.frosteby.eu/ontology#Book");
         assertTrue(necronomicon.hasProperty(RDF.type, book));
         
         // Necronomicon ska vara skapad av AbdulAlhazred
-        Property createdBy = model.getProperty("https://lovecraft.example.org/ontology#createdBy");
-        Resource abdulAlhazred = model.getResource("https://lovecraft.example.org/instance#AbdulAlhazred");
+        Property createdBy = model.getProperty("https://lovecraft.frosteby.eu/ontology#createdBy");
+        Resource abdulAlhazred = model.getResource("https://lovecraft.frosteby.eu/instance#AbdulAlhazred");
         assertTrue(necronomicon.hasProperty(createdBy, abdulAlhazred));
         
         // Necronomicon ska beskriva flera entiteter
-        Property describedIn = model.getProperty("https://lovecraft.example.org/ontology#describedIn");
-        Resource cthulhu = model.getResource("https://lovecraft.example.org/instance#Cthulhu");
+        Property describedIn = model.getProperty("https://lovecraft.frosteby.eu/ontology#describedIn");
+        Resource cthulhu = model.getResource("https://lovecraft.frosteby.eu/instance#Cthulhu");
         assertTrue(cthulhu.hasProperty(describedIn, necronomicon));
     }
 
@@ -257,13 +257,13 @@ public class LovecraftOntologyTest {
         LovecraftOntology.createOntology(model);
         
         // RDL Resource-klass
-        Resource resourceClass = model.getResource("https://lovecraft.example.org/ontology#Resource");
+        Resource resourceClass = model.getResource("https://lovecraft.frosteby.eu/ontology#Resource");
         assertNotNull(resourceClass);
         assertTrue(resourceClass.hasProperty(RDF.type, OWL.Class));
         
         // RDL egenskaper
-        Property hasResourceType = model.getProperty("https://lovecraft.example.org/ontology#hasResourceType");
-        Property hasResourceValue = model.getProperty("https://lovecraft.example.org/ontology#hasResourceValue");
+        Property hasResourceType = model.getProperty("https://lovecraft.frosteby.eu/ontology#hasResourceType");
+        Property hasResourceValue = model.getProperty("https://lovecraft.frosteby.eu/ontology#hasResourceValue");
         
         assertNotNull(hasResourceType);
         assertNotNull(hasResourceValue);
@@ -271,7 +271,7 @@ public class LovecraftOntologyTest {
         assertTrue(hasResourceValue.hasProperty(RDF.type, OWL.DatatypeProperty));
         
         // Necronomicon som RDL-resurs
-        Resource necronomicon = model.getResource("https://lovecraft.example.org/instance#Necronomicon");
+        Resource necronomicon = model.getResource("https://lovecraft.frosteby.eu/instance#Necronomicon");
         assertTrue(necronomicon.hasProperty(RDF.type, resourceClass));
         assertTrue(necronomicon.hasProperty(hasResourceType));
         assertTrue(necronomicon.hasProperty(hasResourceValue));
@@ -315,10 +315,10 @@ public class LovecraftOntologyTest {
             "Dreamlands", "PlateauOfLeng"
         };
         
-        Resource locationClass = model.getResource("https://lovecraft.example.org/ontology#Location");
+        Resource locationClass = model.getResource("https://lovecraft.frosteby.eu/ontology#Location");
         
         for (String locationName : locationNames) {
-            Resource location = model.getResource("https://lovecraft.example.org/instance#" + locationName);
+            Resource location = model.getResource("https://lovecraft.frosteby.eu/instance#" + locationName);
             assertNotNull(location, "Location " + locationName + " should exist");
             assertTrue(location.hasProperty(RDF.type, locationClass), 
                 locationName + " should be a Location");
@@ -337,8 +337,63 @@ public class LovecraftOntologyTest {
         };
         
         for (String artifactName : artifactNames) {
-            Resource artifact = model.getResource("https://lovecraft.example.org/instance#" + artifactName);
+            Resource artifact = model.getResource("https://lovecraft.frosteby.eu/instance#" + artifactName);
             assertNotNull(artifact, "Artifact " + artifactName + " should exist");
+        }
+    }
+
+    /**
+     * Testar att URI:erna använder frosteby.eu domän.
+     */
+    @Test
+    public void testUriDomain() {
+        LovecraftOntology.createOntology(model);
+        
+        // Hämta en resurs och verifiera dess URI
+        Resource entity = model.getResource("https://lovecraft.frosteby.eu/ontology#Entity");
+        assertNotNull(entity, "Entity should exist");
+        assertTrue(entity.getURI().contains("lovecraft.frosteby.eu"), 
+            "URI should use frosteby.eu domain");
+        
+        Resource cthulhu = model.getResource("https://lovecraft.frosteby.eu/instance#Cthulhu");
+        assertNotNull(cthulhu, "Cthulhu should exist");
+        assertTrue(cthulhu.getURI().contains("lovecraft.frosteby.eu"), 
+            "Instance URI should use frosteby.eu domain");
+    }
+
+    /**
+     * Testar att gamla URI:er inte används.
+     */
+    @Test
+    public void testOldUriNotUsed() {
+        LovecraftOntology.createOntology(model);
+        
+        // Hämta alla resurser i modellen
+        StmtIterator it = model.listStatements();
+        while (it.hasNext()) {
+            Statement stmt = it.next();
+            
+            // Kolla subjekt
+            if (stmt.getSubject().isResource()) {
+                String uri = stmt.getSubject().asResource().getURI();
+                if (uri != null) {
+                    assertFalse(uri.contains("lovecraft.example.org"), 
+                        "Should not use old example.org domain: " + uri);
+                    assertFalse(uri.contains("lovecraft.example.com"), 
+                        "Should not use old example.com domain: " + uri);
+                }
+            }
+            
+            // Kolla objekt
+            if (stmt.getObject().isResource()) {
+                String uri = stmt.getObject().asResource().getURI();
+                if (uri != null) {
+                    assertFalse(uri.contains("lovecraft.example.org"), 
+                        "Should not use old example.org domain in object: " + uri);
+                    assertFalse(uri.contains("lovecraft.example.com"), 
+                        "Should not use old example.com domain in object: " + uri);
+                }
+            }
         }
     }
 }

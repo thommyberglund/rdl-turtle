@@ -20,8 +20,8 @@ import java.util.Map;
 public class LovecraftOntology {
 
     // Namnrymder
-    private static final String LOVE_NS = "https://lovecraft.example.org/ontology#";
-    private static final String LOVE_INST_NS = "https://lovecraft.example.org/instance#";
+    private static final String LOVE_NS = "https://lovecraft.frosteby.eu/ontology#";
+    private static final String LOVE_INST_NS = "https://lovecraft.frosteby.eu/instance#";
     private static final String DCTERMS_NS = "http://purl.org/dc/terms/";
     private static final String SKOS_NS = "http://www.w3.org/2004/02/skos/core#";
     private static final String FOAF_NS = "http://xmlns.com/foaf/0.1/";

@@ -6,7 +6,7 @@ Denna katalog innehåller en **Python-implementation** som genererar en **OWL-on
 
 ---
 
-## 📁 Innehåll
+##  Innehåll
 
 ```
 python/
@@ -20,7 +20,7 @@ python/
 
 ---
 
-## 🛠 Beroenden
+##  Beroenden
 
 Projektet använder följande Python-bibliotek:
 - **[rdflib](https://rdflib.readthedocs.io/)** - RDF-bibliotek för Python
@@ -28,7 +28,7 @@ Projektet använder följande Python-bibliotek:
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### 1. Skapa en virtuell miljö (rekommenderat)
 
@@ -76,7 +76,7 @@ Du kan modifiera `lovecraft_ontology.py` för att:
 
 ---
 
-## ✅ Kör tester
+##  Kör tester
 
 ### Kör alla tester
 
@@ -102,7 +102,7 @@ python -m unittest -v test_lovecraft_ontology.py
 
 ---
 
-## 📊 Tester som inkluderas
+##  Tester som inkluderas
 
 | Testklass | Beskrivning |
 |-----------|--------------|
@@ -111,18 +111,18 @@ python -m unittest -v test_lovecraft_ontology.py
 
 ### Testtäckning
 
-- ✅ Ontologiheader och metadata
-- ✅ Klasshierarki (OWL Classes)
-- ✅ Objekt- och Datatype Properties
-- ✅ Individer (Cthulhu, Necronomicon, etc.)
-- ✅ RDL-resurser
-- ✅ Relationer mellan entiteter
-- ✅ Serialisering till Turtle-format
-- ✅ Filgenerering
+-  Ontologiheader och metadata
+-  Klasshierarki (OWL Classes)
+-  Objekt- och Datatype Properties
+-  Individer (Cthulhu, Necronomicon, etc.)
+-  RDL-resurser
+-  Relationer mellan entiteter
+-  Serialisering till Turtle-format
+-  Filgenerering
 
 ---
 
-## 🔧 API-Referens
+##  API-Referens
 
 ### `create_lovecraft_ontology()`
 
@@ -156,14 +156,14 @@ save_ontology(graph, "my_ontology.ttl")
 
 ---
 
-## 🌌 Ontologins Struktur
+##  Ontologins Struktur
 
 ### Namnrymder
 
 | Prefix | URI |
 |--------|-----|
-| `lovecraft:` | `https://lovecraft.example.org/ontology#` |
-| `instance:` | `https://lovecraft.example.org/instance#` |
+| `lovecraft:` | `https://lovecraft.frosteby.eu/ontology#` |
+| `instance:` | `https://lovecraft.frosteby.eu/instance#` |
 | `owl:` | `http://www.w3.org/2002/07/owl#` |
 | `rdf:` | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` |
 | `rdfs:` | `http://www.w3.org/2000/01/rdf-schema#` |
@@ -201,7 +201,7 @@ Entity
 
 ---
 
-## 📝 Exempel: Använda ontologin
+##  Exempel: Använda ontologin
 
 ### Ladda och fråga ontologin
 
@@ -216,8 +216,8 @@ graph.parse("lovecraft_mythos.ttl", format="turtle")
 # Fråga: Hitta alla Great Old Ones
 from rdflib import URIRef
 
-LOVE = URIRef("https://lovecraft.example.org/ontology#")
-LOVE_INST = URIRef("https://lovecraft.example.org/instance#")
+LOVE = URIRef("https://lovecraft.frosteby.eu/ontology#")
+LOVE_INST = URIRef("https://lovecraft.frosteby.eu/instance#")
 
 for s, p, o in graph:
     if p == RDF.type and o == LOVE.GreatOldOne:
@@ -234,19 +234,19 @@ from rdflib.namespace import RDF, OWL, RDFS
 graph = create_lovecraft_ontology()
 
 # Lägg till en ny klass
-NewClass = URIRef("https://lovecraft.example.org/ontology#NewClass")
+NewClass = URIRef("https://lovecraft.frosteby.eu/ontology#NewClass")
 graph.add((NewClass, RDF.type, OWL.Class))
 graph.add((NewClass, RDFS.label, Literal("New Class", lang="en")))
 
 # Lägg till en ny individ
-NewIndividual = URIRef("https://lovecraft.example.org/instance#NewIndividual")
+NewIndividual = URIRef("https://lovecraft.frosteby.eu/instance#NewIndividual")
 graph.add((NewIndividual, RDF.type, OWL.NamedIndividual))
 graph.add((NewIndividual, RDF.type, NewClass))
 ```
 
 ---
 
-## 🔄 Uppdatera beroenden
+##  Uppdatera beroenden
 
 Om du vill uppdatera beroendena:
 
@@ -257,13 +257,13 @@ pip freeze > requirements.txt
 
 ---
 
-## 📜 Licens
+##  Licens
 
 Detta projekt är öppen källkod och tillgängligt under [MIT-licensen](../LICENSE).
 
 ---
 
-## 🤝 Bidrag
+##  Bidrag
 
 Bidrag är välkomna! Förslag på förbättringar:
 - Lägga till fler Lovecraft-entiteter
@@ -273,6 +273,6 @@ Bidrag är välkomna! Förslag på förbättringar:
 
 ---
 
-## 📞 Support
+##  Support
 
 För frågor om Python-implementationen, se [huvud-dokumentationen](../README.md).

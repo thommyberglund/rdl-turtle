@@ -10,8 +10,8 @@ from rdflib import Graph, Literal, Namespace, URIRef, XSD
 from rdflib.namespace import RDF, RDFS, OWL, XSD, FOAF
 
 # Definiera namnrymder
-LOVE = Namespace("https://lovecraft.example.org/ontology#")
-LOVE_INST = Namespace("https://lovecraft.example.org/instance#")
+LOVE = Namespace("https://lovecraft.frosteby.eu/ontology#")
+LOVE_INST = Namespace("https://lovecraft.frosteby.eu/instance#")
 DCTERMS = Namespace("http://purl.org/dc/terms/")
 SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
 

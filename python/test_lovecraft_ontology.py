@@ -21,8 +21,8 @@ class TestLovecraftOntology(unittest.TestCase):
     def setUp(self):
         """Skapar en ny ontologi för varje test."""
         self.graph = create_lovecraft_ontology()
-        self.LOVE = Namespace("https://lovecraft.example.org/ontology#")
-        self.LOVE_INST = Namespace("https://lovecraft.example.org/instance#")
+        self.LOVE = Namespace("https://lovecraft.frosteby.eu/ontology#")
+        self.LOVE_INST = Namespace("https://lovecraft.frosteby.eu/instance#")
 
     def test_ontology_header(self):
         """Testar att ontologin har korrekt header."""

@@ -7,6 +7,9 @@
 *.ipr
 *.iws
 
+# Generated ontology classes
+src/main/java/org/lovecraft/ontology/generated/
+
 # Maven
 target/
 pom.xml.versionsBackup

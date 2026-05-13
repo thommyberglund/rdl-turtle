@@ -6,7 +6,7 @@ Detta repository innehåller implementeringar i **Python** och **Java** som gene
 
 ---
 
-## 📁 Struktur
+## Struktur
 
 ```
 rdl-turtle/
@@ -25,7 +25,7 @@ rdl-turtle/
 
 ---
 
-## 🎯 Syfte
+## Syfte
 
 Projektet syftar till att:
 - Demonstrera hur man skapar **semantiska ontologier** med **OWL** och **RDL**
@@ -35,7 +35,7 @@ Projektet syftar till att:
 
 ---
 
-## 🌌 Ontologins Innehåll
+## Ontologins Innehåll
 
 Ontologin inkluderar:
 
@@ -67,7 +67,7 @@ Ontologin inkluderar:
 
 ---
 
-## 🛠 Teknologier
+## Teknologier
 
 | Teknologi | Beskrivning | Användning |
 |------------|--------------|-------------|
@@ -82,14 +82,14 @@ Ontologin inkluderar:
 
 ---
 
-## 📖 Dokumentation
+## Dokumentation
 
 - [Python-implementation](./python/README.md) - Detaljer om Python-koden
 - [Java-implementation](./java/README.md) - Detaljer om Java-koden
 
 ---
 
-## 🚀 Snabbstart
+## Snabbstart
 
 ### För båda implementationerna
 
@@ -103,13 +103,24 @@ Ontologin inkluderar:
    - [Python](./python/README.md) - Enklare att komma igång
    - [Java](./java/README.md) - Mer enterprise-inriktad
 
+### Omvänd generator (Turtle → Java)
+
+Java-implementationen inkluderar också en **OntologyToJavaGenerator** som läser en Turtle-fil och genererar Java-klasser:
+
+```bash
+cd java
+mvn exec:java -Dexec.mainClass="org.lovecraft.ontology.OntologyToJavaGenerator" -Dexec.args="lovecraft_mythos.ttl"
+```
+
+Se [Java-dokumentationen](./java/README.md#omvänd-generator-turtle--java) för mer information.
+
 ---
 
-## 🔍 Exempel på Turtle-utdata
+## Exempel på Turtle-utdata
 
 ```turtle
-@prefix lovecraft: <https://lovecraft.example.org/ontology#> .
-@prefix instance: <https://lovecraft.example.org/instance#> .
+@prefix lovecraft: <https://lovecraft.frosteby.eu/ontology#> .
+@prefix instance: <https://lovecraft.frosteby.eu/instance#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -127,13 +138,13 @@ instance:Necronomicon a lovecraft:Book, owl:NamedIndividual ;
 
 ---
 
-## 📜 Licens
+## Licens
 
 Detta projekt är öppen källkod och tillgängligt under [MIT-licensen](LICENSE).
 
 ---
 
-## 🤝 Bidrag
+## Bidrag
 
 Bidrag är välkomna! Öppna gärna **issues** eller **pull requests** för:
 - Förbättringar av ontologin
@@ -143,6 +154,6 @@ Bidrag är välkomna! Öppna gärna **issues** eller **pull requests** för:
 
 ---
 
-## 📞 Kontakt
+## Kontakt
 
 För frågor om projektet, kontakta repository-ägaren.

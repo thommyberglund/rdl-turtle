@@ -56,5 +56,5 @@ jobs:
       - name: Verify JAR file
         working-directory: java
         run: |
-          test -f target/lovecraft-ontology-1.0.0.jar
+          test -f java/target/lovecraft-ontology-1.0.0.jar
           echo "JAR file built successfully"

@@ -1,4 +1,4 @@
-package org.lovecraft.ontology;
+package eu.frosteby.ontology;
 
 /**
  * Main-klass för att starta Lovecraft Ontology-programmet.

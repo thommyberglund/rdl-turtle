@@ -1,4 +1,4 @@
-package org.lovecraft.ontology;
+package eu.frosteby.ontology;
 
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.*;
@@ -124,11 +124,11 @@ public class OntologyToJavaGeneratorTest {
         }, "Should generate Java classes without errors");
         
         // Verifiera att Entity-klass genererades
-        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/Entity.java");
+        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/Entity.java");
         assertTrue(Files.exists(entityFile), "Entity.java should be generated");
         
         // Verifiera innehåll
-        String content = new String(Files.readAllBytes(entityFile), "UTF-8");
+        String content = new String(Files.readAllBytes(entityFile), "UTF-8");;
         assertTrue(content.contains("public class Entity"), "Entity class should be defined");
         assertTrue(content.contains("URI"), "Entity should have URI constant");
         assertTrue(content.contains("https://lovecraft.frosteby.eu/ontology#Entity"), "URI should use frosteby.eu domain");
@@ -143,7 +143,7 @@ public class OntologyToJavaGeneratorTest {
         generator.generateFromTurtle(TEST_TURTLE_FILE, TEST_OUTPUT_DIR);
         
         // Verifiera att OntologyFactory genererades
-        Path factoryFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/OntologyFactory.java");
+        Path factoryFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/OntologyFactory.java");
         assertTrue(Files.exists(factoryFile), "OntologyFactory.java should be generated");
         
         // Verifiera att URI-konstanter genererades
@@ -164,7 +164,7 @@ public class OntologyToJavaGeneratorTest {
         generator.generateFromTurtle(TEST_TURTLE_FILE, TEST_OUTPUT_DIR);
         
         // Verifiera att Deity-klass genererades
-        Path deityFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/Deity.java");
+        Path deityFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/Deity.java");
         assertTrue(Files.exists(deityFile), "Deity.java should be generated");
     }
 
@@ -189,7 +189,7 @@ public class OntologyToJavaGeneratorTest {
         generator.generateFromTurtle(TEST_TURTLE_FILE, TEST_OUTPUT_DIR);
         
         // Läs Entity.java
-        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/Entity.java");
+        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/Entity.java");
         String content = new String(Files.readAllBytes(entityFile), "UTF-8");
         
         // Verifiera frosteby.eu
@@ -209,7 +209,7 @@ public class OntologyToJavaGeneratorTest {
         OntologyToJavaGenerator generator = new OntologyToJavaGenerator();
         generator.generateFromTurtle(TEST_TURTLE_FILE, TEST_OUTPUT_DIR);
         
-        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/Entity.java");
+        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/Entity.java");
         String content = new String(Files.readAllBytes(entityFile), "UTF-8");
         
         // Verifiera nödvändiga metoder
@@ -230,10 +230,10 @@ public class OntologyToJavaGeneratorTest {
         OntologyToJavaGenerator generator = new OntologyToJavaGenerator();
         generator.generateFromTurtle(TEST_TURTLE_FILE, TEST_OUTPUT_DIR);
         
-        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/Entity.java");
+        Path entityFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/Entity.java");
         String content = new String(Files.readAllBytes(entityFile), "UTF-8");
         
-        assertTrue(content.contains("package org.lovecraft.ontology.generated;"), 
+        assertTrue(content.contains("package eu.frosteby.ontology.generated;"), 
             "Should have correct package declaration");
     }
 
@@ -246,7 +246,7 @@ public class OntologyToJavaGeneratorTest {
         generator.generateFromTurtle(TEST_TURTLE_FILE, TEST_OUTPUT_DIR);
         
         // Verifiera att paketkatalogen skapades
-        Path packageDir = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated");
+        Path packageDir = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated");
         assertTrue(Files.exists(packageDir), "Package directory should be created");
     }
 
@@ -260,7 +260,7 @@ public class OntologyToJavaGeneratorTest {
         
         // Vår testfil har GreatOldOne som klass
         // Verifiera att den genereras korrekt
-        Path greatOldOneFile = Paths.get(TEST_OUTPUT_DIR, "org/lovecraft/ontology/generated/Deity.java");
+        Path greatOldOneFile = Paths.get(TEST_OUTPUT_DIR, "eu/frosteby/ontology/generated/Deity.java");
         assertTrue(Files.exists(greatOldOneFile), "Deity class should be generated");
     }
 }

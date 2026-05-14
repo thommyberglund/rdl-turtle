@@ -1,4 +1,4 @@
-package org.lovecraft.ontology;
+package eu.frosteby.ontology;
 
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.*;

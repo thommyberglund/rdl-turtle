@@ -1,4 +1,4 @@
-package org.lovecraft.ontology;
+package eu.frosteby.ontology;
 
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.*;
@@ -18,7 +18,7 @@ import java.util.*;
  */
 public class OntologyToJavaGenerator {
 
-    private static final String BASE_PACKAGE = "org.lovecraft.ontology.generated";
+    private static final String BASE_PACKAGE = "eu.frosteby.ontology.generated";
     private static final String OUTPUT_DIR = "src/main/java";
     private static final String LOVE_NS = "https://lovecraft.frosteby.eu/ontology#";
     private static final String LOVE_INST_NS = "https://lovecraft.frosteby.eu/instance#";

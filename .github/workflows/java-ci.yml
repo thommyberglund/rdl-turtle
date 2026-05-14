@@ -56,5 +56,5 @@ jobs:
       - name: Verify JAR file
         working-directory: java
         run: |
-          test -f java/target/ontology-1.0.0.jar
+          test -f target/ontology-1.0.0.jar
           echo "JAR file built successfully"

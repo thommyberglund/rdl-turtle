@@ -12,9 +12,11 @@ Denna katalog innehåller en **Python-implementation** som genererar en **OWL-on
 python/
 ├── README.md                        # Denna fil
 ├── lovecraft_ontology.py            # Huvudimplementering (Turtle)
-├── lovecraft_ontology_jsonld.py     # JSON-LD-implementering
+├── lovecraft_ontology_jsonld.py     # JSON-LD-implementering (generering)
+├── consume_jsonld.py                # JSON-LD-konsumtion (läsning)
 ├── test_lovecraft_ontology.py       # Enhetstester (Turtle)
 ├── test_lovecraft_ontology_jsonld.py # Enhetstester (JSON-LD)
+├── test_consume_jsonld.py           # Enhetstester (konsumtion)
 ├── requirements.txt                 # Beroenden
 ├── lovecraft_mythos.ttl            # Genererad Turtle-fil (fullständig)
 ├── lovecraft_mythos_simple.ttl     # Genererad Turtle-fil (kopia)
@@ -80,6 +82,18 @@ Detta kommer att generera två JSON-LD-filer:
 - `lovecraft_mythos.jsonld` - Fullständig ontologi
 - `lovecraft_mythos_simple.jsonld` - Kopia för läsbarhet
 
+### Konsumera JSON-LD-ontologin
+
+```bash
+python consume_jsonld.py
+```
+
+Detta kommer att:
+- Ladda `lovecraft_mythos.jsonld`
+- Omvandla den till en RDF-graf
+- Spara som `consumed_ontology.ttl` för verifiering
+- Visa exempel-frågor på grafen
+
 ### Kör med anpassade inställningar
 
 Du kan modifiera `lovecraft_ontology.py` för att:
@@ -102,6 +116,12 @@ python -m unittest test_lovecraft_ontology.py
 
 ```bash
 python -m unittest test_lovecraft_ontology_jsonld.py
+```
+
+### Kör konsumtionstester
+
+```bash
+python -m unittest test_consume_jsonld.py
 ```
 
 ### Kör alla tester
@@ -159,6 +179,8 @@ python -m unittest -v test_lovecraft_ontology_jsonld.py
 -  Serialisering till Turtle-format
 -  Serialisering till JSON-LD-format
 -  Filgenerering (både Turtle och JSON-LD)
+-  JSON-LD konsumtion och omvandling till RDF
+-  Roundtrip-test (JSON-LD → RDF → Turtle)
 
 ---
 
@@ -198,7 +220,9 @@ save_ontology(graph, "my_ontology.ttl")
 
 ### JSON-LD API
 
-#### `create_lovecraft_ontology_jsonld()`
+#### Generering (skriva JSON-LD)
+
+##### `create_lovecraft_ontology_jsonld()`
 
 Skapar och returnerar en **JSON-LD-dokument** med Lovecraft-ontologin.
 
@@ -213,7 +237,7 @@ doc = create_lovecraft_ontology_jsonld()
 print(json.dumps(doc, indent=2))
 ```
 
-#### `save_ontology_jsonld(ontology, filename)`
+##### `save_ontology_jsonld(ontology, filename)`
 
 Sparar en JSON-LD-ontologi till en fil.
 
@@ -227,6 +251,63 @@ from lovecraft_ontology_jsonld import create_lovecraft_ontology_jsonld, save_ont
 
 doc = create_lovecraft_ontology_jsonld()
 save_ontology_jsonld(doc, "my_ontology.jsonld")
+```
+
+#### Konsumtion (läsa JSON-LD)
+
+##### `consume_jsonld(filename)`
+
+Laddar en JSON-LD-fil och returnerar en RDF-graf.
+
+**Parametrar:**
+- `filename` (`str`) - Filnamn för JSON-LD-filen
+
+**Returvärde:** `rdflib.Graph` - RDF-graf med ontologin
+
+**Exempel:**
+```python
+from consume_jsonld import consume_jsonld
+
+graph = consume_jsonld("lovecraft_mythos.jsonld")
+# Använd grafen med rdflib
+for s, p, o in graph:
+    print(f"{s} {p} {o}")
+```
+
+##### `jsonld_to_rdf_graph(jsonld_doc)`
+
+Omvandlar ett JSON-LD-dokument (dict) till en RDF-graf.
+
+**Parametrar:**
+- `jsonld_doc` (`dict`) - JSON-LD-dokument som Python-dict
+
+**Returvärde:** `rdflib.Graph` - RDF-graf
+
+**Exempel:**
+```python
+from consume_jsonld import jsonld_to_rdf_graph
+import json
+
+with open("lovecraft_mythos.jsonld", "r") as f:
+    doc = json.load(f)
+
+graph = jsonld_to_rdf_graph(doc)
+```
+
+##### `save_as_turtle(graph, filename)`
+
+Sparar en RDF-graf som Turtle-fil.
+
+**Parametrar:**
+- `graph` (`rdflib.Graph`) - RDF-grafen att spara
+- `filename` (`str`) - Filnamn för utdata
+
+**Exempel:**
+```python
+from consume_jsonld import consume_jsonld, save_as_turtle
+
+graph = consume_jsonld("lovecraft_mythos.jsonld")
+save_as_turtle(graph, "output.ttl")
 ```
 
 ---
@@ -347,6 +428,44 @@ Bidrag är välkomna! Förslag på förbättringar:
 - Dokumentationsförbättringar
 
 ---
+
+##  Användningsexempel
+
+### Fullständig workflow: Generera → Konsumera → Analysera
+
+```python
+# 1. Generera JSON-LD-ontologin
+from lovecraft_ontology_jsonld import create_lovecraft_ontology_jsonld, save_ontology_jsonld
+
+doc = create_lovecraft_ontology_jsonld()
+save_ontology_jsonld(doc, "my_ontology.jsonld")
+
+# 2. Konsumera JSON-LD och omvandla till RDF-graf
+from consume_jsonld import consume_jsonld
+
+graph = consume_jsonld("my_ontology.jsonld")
+
+# 3. Fråga grafen med rdflib
+from rdflib.namespace import RDF, OWL
+from rdflib import Namespace
+
+LOVE = Namespace("https://lovecraft.frosteby.eu/ontology#")
+LOVE_INST = Namespace("https://lovecraft.frosteby.eu/instance#")
+
+# Hitta alla Great Old Ones
+for s, p, o in graph.triples((None, RDF.type, LOVE.GreatOldOne)):
+    print(f"Great Old One: {s}")
+
+# Hitta vad Cthulhu kontrollera
+cthulhu = LOVE_INST.Cthulhu
+for s, p, o in graph.triples((cthulhu, LOVE.controls, None)):
+    print(f"Cthulhu controls: {o}")
+
+# 4. Spara som Turtle för vidare användning
+from consume_jsonld import save_as_turtle
+
+save_as_turtle(graph, "my_ontology.ttl")
+```
 
 ##  JSON-LD vs Turtle
 

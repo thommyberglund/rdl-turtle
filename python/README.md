@@ -1,8 +1,8 @@
 # Lovecraft Mythos Ontology - Python Implementation
 
-> **Python-implementation av RDL/OWL-ontologi i Turtle-format**
+> **Python-implementation av RDL/OWL-ontologi i Turtle- och JSON-LD-format**
 
-Denna katalog innehåller en **Python-implementation** som genererar en **OWL-ontologi** med **RDL** (Resource Description Language) i **Turtle-format**, baserad på **H.P. Lovecrafts Cthulhu-mytologi**.
+Denna katalog innehåller en **Python-implementation** som genererar en **OWL-ontologi** med **RDL** (Resource Description Language) i **Turtle-format** och **JSON-LD-format**, baserad på **H.P. Lovecrafts Cthulhu-mytologi**.
 
 ---
 
@@ -10,12 +10,16 @@ Denna katalog innehåller en **Python-implementation** som genererar en **OWL-on
 
 ```
 python/
-├── README.md                    # Denna fil
-├── lovecraft_ontology.py        # Huvudimplementering
-├── test_lovecraft_ontology.py   # Enhetstester
-├── requirements.txt             # Beroenden
-├── lovecraft_mythos.ttl        # Genererad Turtle-fil (fullständig)
-└── lovecraft_mythos_simple.ttl # Genererad Turtle-fil (kopia)
+├── README.md                        # Denna fil
+├── lovecraft_ontology.py            # Huvudimplementering (Turtle)
+├── lovecraft_ontology_jsonld.py     # JSON-LD-implementering
+├── test_lovecraft_ontology.py       # Enhetstester (Turtle)
+├── test_lovecraft_ontology_jsonld.py # Enhetstester (JSON-LD)
+├── requirements.txt                 # Beroenden
+├── lovecraft_mythos.ttl            # Genererad Turtle-fil (fullständig)
+├── lovecraft_mythos_simple.ttl     # Genererad Turtle-fil (kopia)
+├── lovecraft_mythos.jsonld         # Genererad JSON-LD-fil (fullständig)
+└── lovecraft_mythos_simple.jsonld  # Genererad JSON-LD-fil (kopia)
 ```
 
 ---
@@ -56,7 +60,7 @@ pip install -r requirements.txt
 
 ## 🏃 Kör programmet
 
-### Generera ontologin
+### Generera Turtle-ontologin
 
 ```bash
 python lovecraft_ontology.py
@@ -65,6 +69,16 @@ python lovecraft_ontology.py
 Detta kommer att generera två Turtle-filer:
 - `lovecraft_mythos.ttl` - Fullständig ontologi
 - `lovecraft_mythos_simple.ttl` - Kopia för läsbarhet
+
+### Generera JSON-LD-ontologin
+
+```bash
+python lovecraft_ontology_jsonld.py
+```
+
+Detta kommer att generera två JSON-LD-filer:
+- `lovecraft_mythos.jsonld` - Fullständig ontologi
+- `lovecraft_mythos_simple.jsonld` - Kopia för läsbarhet
 
 ### Kör med anpassade inställningar
 
@@ -78,17 +92,32 @@ Du kan modifiera `lovecraft_ontology.py` för att:
 
 ##  Kör tester
 
-### Kör alla tester
+### Kör alla tester (Turtle)
 
 ```bash
 python -m unittest test_lovecraft_ontology.py
 ```
 
+### Kör alla tester (JSON-LD)
+
+```bash
+python -m unittest test_lovecraft_ontology_jsonld.py
+```
+
+### Kör alla tester
+
+```bash
+python -m unittest discover -s . -p "test_*.py"
+```
+
 ### Kör specifika testklasser
 
 ```bash
-# Kör en specifik testklass
+# Kör en specifik testklass (Turtle)
 python -m unittest test_lovecraft_ontology.TestLovecraftOntology
+
+# Kör en specifik testklass (JSON-LD)
+python -m unittest test_lovecraft_ontology_jsonld.TestLovecraftOntologyJsonLD
 
 # Kör en specifik testmetod
 python -m unittest test_lovecraft_ontology.TestLovecraftOntology.test_cthulhu_properties
@@ -98,16 +127,26 @@ python -m unittest test_lovecraft_ontology.TestLovecraftOntology.test_cthulhu_pr
 
 ```bash
 python -m unittest -v test_lovecraft_ontology.py
+python -m unittest -v test_lovecraft_ontology_jsonld.py
 ```
 
 ---
 
 ##  Tester som inkluderas
 
+### Turtle-tester
+
 | Testklass | Beskrivning |
 |-----------|--------------|
 | `TestLovecraftOntology` | Tester för ontologins struktur och innehåll |
 | `TestLovecraftOntologyFileGeneration` | Tester för filgenerering |
+
+### JSON-LD-tester
+
+| Testklass | Beskrivning |
+|-----------|--------------|
+| `TestLovecraftOntologyJsonLD` | Tester för JSON-LD-ontologins struktur och innehåll |
+| `TestLovecraftOntologyJsonLDFileGeneration` | Tester för JSON-LD-filgenerering |
 
 ### Testtäckning
 
@@ -118,13 +157,16 @@ python -m unittest -v test_lovecraft_ontology.py
 -  RDL-resurser
 -  Relationer mellan entiteter
 -  Serialisering till Turtle-format
--  Filgenerering
+-  Serialisering till JSON-LD-format
+-  Filgenerering (både Turtle och JSON-LD)
 
 ---
 
 ##  API-Referens
 
-### `create_lovecraft_ontology()`
+### Turtle API
+
+#### `create_lovecraft_ontology()`
 
 Skapar och returnerar en **RDF Graph** med Lovecraft-ontologin.
 
@@ -138,7 +180,7 @@ graph = create_lovecraft_ontology()
 print(graph.serialize(format="turtle"))
 ```
 
-### `save_ontology(graph, filename)`
+#### `save_ontology(graph, filename)`
 
 Sparar en RDF-graf till en Turtle-fil.
 
@@ -152,6 +194,39 @@ from lovecraft_ontology import create_lovecraft_ontology, save_ontology
 
 graph = create_lovecraft_ontology()
 save_ontology(graph, "my_ontology.ttl")
+```
+
+### JSON-LD API
+
+#### `create_lovecraft_ontology_jsonld()`
+
+Skapar och returnerar en **JSON-LD-dokument** med Lovecraft-ontologin.
+
+**Returvärde:** `dict` - Ett JSON-LD-dokument med ontologin
+
+**Exempel:**
+```python
+from lovecraft_ontology_jsonld import create_lovecraft_ontology_jsonld
+import json
+
+doc = create_lovecraft_ontology_jsonld()
+print(json.dumps(doc, indent=2))
+```
+
+#### `save_ontology_jsonld(ontology, filename)`
+
+Sparar en JSON-LD-ontologi till en fil.
+
+**Parametrar:**
+- `ontology` (`dict`) - JSON-LD-dokumentet att spara
+- `filename` (`str`) - Filnamn för utdata
+
+**Exempel:**
+```python
+from lovecraft_ontology_jsonld import create_lovecraft_ontology_jsonld, save_ontology_jsonld
+
+doc = create_lovecraft_ontology_jsonld()
+save_ontology_jsonld(doc, "my_ontology.jsonld")
 ```
 
 ---
@@ -272,6 +347,25 @@ Bidrag är välkomna! Förslag på förbättringar:
 - Dokumentationsförbättringar
 
 ---
+
+##  JSON-LD vs Turtle
+
+### Skillnader mellan formaten
+
+| Aspekt | Turtle | JSON-LD |
+|--------|--------|---------|
+| **Format** | Textbaserat, trippel-baserat | JSON-baserat, dokument-baserat |
+| **Läsbarhet** | Mänskligt läsbart | Maskinläsbart, mänskligt läsbart med formatering |
+| **Struktur** | Prefix + tripplar | @context + @graph med noder |
+| **Användning** | RDF/Linked Data-standard | Web API-er, JavaScript-applikationer |
+| **Beroenden** | Kräver rdflib | Inga externa beroenden (endast standardbibliotek) |
+
+### När ska man använda vilket format?
+
+- **Använd Turtle** om du arbetar med RDF-verktyg, SPARQL-frågor, eller behöver fullständig RDF/OWL-support
+- **Använd JSON-LD** om du integrerar med webb-API:er, JavaScript-applikationer, eller behöver ett lättviktigt JSON-format
+
+Båda implementeringarna representerar samma ontologi med samma klasser, egenskaper och individer.
 
 ##  Support
 

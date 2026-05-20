@@ -1,8 +1,8 @@
 # Lovecraft Mythos Ontology - Java Implementation
 
-> **Java-implementation av RDL/OWL-ontologi i Turtle-format**
+> **Java-implementation av RDL/OWL-ontologi i Turtle- och JSON-LD-format**
 
-Denna katalog innehåller en **Java-implementation** som genererar en **OWL-ontologi** med **RDL** (Resource Description Language) i **Turtle-format**, baserad på **H.P. Lovecrafts Cthulhu-mytologi**. Implementationen använder **Apache Jena** för att hantera RDF-data.
+Denna katalog innehåller en **Java-implementation** som genererar en **OWL-ontologi** med **RDL** (Resource Description Language) i **Turtle-format** och **JSON-LD-format**, baserad på **H.P. Lovecrafts Cthulhu-mytologi**. Implementationen använder **Apache Jena** för att hantera RDF-data.
 
 ---
 
@@ -15,12 +15,16 @@ java/
 ├── .gitignore                   # Git-ignorera regler
 ├── pom.xml                     # Maven-konfiguration
 └── src/
-    ├── main/java/org/lovecraft/ontology/
+    ├── main/java/eu/frosteby/ontology/
     │   ├── Main.java                      # Huvudklass för att starta programmet
     │   ├── LovecraftOntology.java         # Huvudimplementering (OWL → Turtle)
+    │   ├── LovecraftOntologyJsonLD.java    # JSON-LD-implementering (OWL → JSON-LD)
+    │   ├── ConsumeJsonLD.java             # JSON-LD-konsumtion (JSON-LD → RDF)
     │   └── OntologyToJavaGenerator.java    # Generator (Turtle → Java klasser)
-    └── test/java/org/lovecraft/ontology/
-        └── LovecraftOntologyTest.java # Enhetstester
+    └── test/java/eu/frosteby/ontology/
+        ├── LovecraftOntologyTest.java       # Enhetstester (Turtle)
+        ├── LovecraftOntologyJsonLDTest.java # Enhetstester (JSON-LD)
+        └── ConsumeJsonLDTest.java           # Enhetstester (konsumtion)
 ```
 
 ---
@@ -74,13 +78,37 @@ java -jar target/lovecraft-ontology-1.0.0.jar
 ### Kör med Maven
 
 ```bash
-# Kör direkt med Maven
-mvn exec:java -Dexec.mainClass="org.lovecraft.ontology.LovecraftOntology"
+# Kör direkt med Maven (Turtle)
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.LovecraftOntology"
 ```
 
 Detta kommer att generera två Turtle-filer:
 - `java/lovecraft_mythos.ttl` - Fullständig ontologi
 - `java/lovecraft_mythos_simple.ttl` - Kopia för läsbarhet
+
+### Generera JSON-LD
+
+```bash
+# Kör JSON-LD-generering
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.LovecraftOntologyJsonLD"
+```
+
+Detta kommer att generera två JSON-LD-filer:
+- `java/lovecraft_mythos.jsonld` - Fullständig ontologi
+- `java/lovecraft_mythos_simple.jsonld` - Kopia för läsbarhet
+
+### Konsumera JSON-LD
+
+```bash
+# Läs JSON-LD och omvandla till RDF
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.ConsumeJsonLD"
+```
+
+Detta kommer att:
+- Ladda `lovecraft_mythos.jsonld`
+- Omvandla den till en RDF-modell
+- Spara som `consumed_ontology.ttl` för verifiering
+- Visa exempel-frågor på modellen
 
 ---
 
@@ -95,8 +123,14 @@ mvn test
 ### Kör specifika tester
 
 ```bash
-# Kör en specifik testklass
+# Kör en specifik testklass (Turtle)
 mvn test -Dtest=LovecraftOntologyTest
+
+# Kör en specifik testklass (JSON-LD)
+mvn test -Dtest=LovecraftOntologyJsonLDTest
+
+# Kör en specifik testklass (konsumtion)
+mvn test -Dtest=ConsumeJsonLDTest
 
 # Kör en specifik testmetod
 mvn test -Dtest=LovecraftOntologyTest#testCthulhuProperties
@@ -112,9 +146,18 @@ mvn test -X
 
 ## Tester som inkluderas
 
+### Turtle-tester
+
 | Testklass | Beskrivning |
 |-----------|--------------|
 | `LovecraftOntologyTest` | Tester för ontologins struktur och innehåll |
+
+### JSON-LD-tester
+
+| Testklass | Beskrivning |
+|-----------|--------------|
+| `LovecraftOntologyJsonLDTest` | Tester för JSON-LD-generering |
+| `ConsumeJsonLDTest` | Tester för JSON-LD-konsumtion |
 
 ### Testtäckning
 
@@ -125,28 +168,33 @@ mvn test -X
 - RDL-resurser
 - Relationer mellan entiteter
 - Serialisering till Turtle-format
+- Serialisering till JSON-LD-format
+- JSON-LD konsumtion och omvandling
+- Roundtrip-test (JSON-LD ↔ Turtle)
 - Platser och artefakter
 
 ---
 
 ## API-Referens
 
-### `LovecraftOntology`
+### Turtle API
 
-Huvudklassen som skapar ontologin.
+#### `LovecraftOntology`
 
-#### Metoder
+Huvudklassen som skapar ontologin i Turtle-format.
 
-##### `main(String[] args)`
+##### Metoder
+
+###### `main(String[] args)`
 
 Huvudmetod som skapar ontologin och sparar den till Turtle-filer.
 
 **Exempel:**
 ```bash
-mvn exec:java -Dexec.mainClass="org.lovecraft.ontology.LovecraftOntology"
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.LovecraftOntology"
 ```
 
-##### `createOntology(Model model)`
+###### `createOntology(Model model)`
 
 Skapar ontologin i en given RDF-modell.
 
@@ -159,13 +207,149 @@ Model model = ModelFactory.createDefaultModel();
 LovecraftOntology.createOntology(model);
 ```
 
-##### `saveModel(Model model, String filename)`
+###### `saveModel(Model model, String filename)`
 
 Sparar en RDF-modell till en Turtle-fil.
 
 **Parametrar:**
 - `model` (`Model`) - RDF-modellen att spara
 - `filename` (`String`) - Filnamn för utdata
+
+### JSON-LD API
+
+#### `LovecraftOntologyJsonLD`
+
+Huvudklassen som skapar ontologin i JSON-LD-format.
+
+##### Metoder
+
+###### `main(String[] args)`
+
+Huvudmetod som skapar ontologin och sparar den till JSON-LD-filer.
+
+**Exempel:**
+```bash
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.LovecraftOntologyJsonLD"
+```
+
+###### `createOntology(Model model)`
+
+Skapar ontologin i en given RDF-modell (samma struktur som Turtle-versionen).
+
+**Parametrar:**
+- `model` (`Model`) - Apache Jena RDF-modell
+
+**Exempel:**
+```java
+Model model = ModelFactory.createDefaultModel();
+LovecraftOntologyJsonLD.createOntology(model);
+```
+
+###### `saveModelAsJsonLD(Model model, String filename)`
+
+Sparar en RDF-modell till en JSON-LD-fil.
+
+**Parametrar:**
+- `model` (`Model`) - RDF-modellen att spara
+- `filename` (`String`) - Filnamn för utdata
+
+**Exempel:**
+```java
+Model model = ModelFactory.createDefaultModel();
+LovecraftOntologyJsonLD.createOntology(model);
+LovecraftOntologyJsonLD.saveModelAsJsonLD(model, "output.jsonld");
+```
+
+#### `ConsumeJsonLD`
+
+Klassen som läser och omvandlar JSON-LD till RDF-modell.
+
+##### Metoder
+
+###### `main(String[] args)`
+
+Huvudmetod som läser JSON-LD och visar information.
+
+**Exempel:**
+```bash
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.ConsumeJsonLD"
+```
+
+###### `loadJsonLDFile(String filename)`
+
+Laddar en JSON-LD-fil och returnerar en RDF-modell.
+
+**Parametrar:**
+- `filename` (`String`) - Filnamn för JSON-LD-filen
+
+**Returvärde:** `Model` - RDF-modell, eller null om fel uppstår
+
+**Exempel:**
+```java
+Model model = ConsumeJsonLD.loadJsonLDFile("lovecraft_mythos.jsonld");
+```
+
+###### `loadJsonLDFileWithPrefixes(String filename)`
+
+Laddar en JSON-LD-fil med namnrymdsprefix.
+
+**Parametrar:**
+- `filename` (`String`) - Filnamn för JSON-LD-filen
+
+**Returvärde:** `Model` - RDF-modell med prefix, eller null om fel uppstår
+
+**Exempel:**
+```java
+Model model = ConsumeJsonLD.loadJsonLDFileWithPrefixes("lovecraft_mythos.jsonld");
+```
+
+###### `saveModelAsTurtle(Model model, String filename)`
+
+Sparar en RDF-modell som Turtle-fil.
+
+**Parametrar:**
+- `model` (`Model`) - RDF-modellen att spara
+- `filename` (`String`) - Filnamn för utdata
+
+**Exempel:**
+```java
+Model model = ConsumeJsonLD.loadJsonLDFile("input.jsonld");
+ConsumeJsonLD.saveModelAsTurtle(model, "output.ttl");
+```
+
+###### `saveModelAsJsonLD(Model model, String filename)`
+
+Sparar en RDF-modell som JSON-LD-fil.
+
+**Parametrar:**
+- `model` (`Model`) - RDF-modellen att spara
+- `filename` (`String`) - Filnamn för utdata
+
+###### `convertJsonLDToTurtle(String inputJsonLDFile, String outputTurtleFile)`
+
+Omvandlar en JSON-LD-fil till en Turtle-fil.
+
+**Parametrar:**
+- `inputJsonLDFile` (`String`) - Inmatningsfil (JSON-LD)
+- `outputTurtleFile` (`String`) - Utmatningsfil (Turtle)
+
+**Exempel:**
+```java
+ConsumeJsonLD.convertJsonLDToTurtle("input.jsonld", "output.ttl");
+```
+
+###### `convertTurtleToJsonLD(String inputTurtleFile, String outputJsonLDFile)`
+
+Omvandlar en Turtle-fil till en JSON-LD-fil.
+
+**Parametrar:**
+- `inputTurtleFile` (`String`) - Inmatningsfil (Turtle)
+- `outputJsonLDFile` (`String`) - Utmatningsfil (JSON-LD)
+
+**Exempel:**
+```java
+ConsumeJsonLD.convertTurtleToJsonLD("input.ttl", "output.jsonld");
+```
 
 ---
 
@@ -250,6 +434,49 @@ Entity
 | `hasDescription` | DatatypeProperty | Entity | string | Beskrivning av en entitet |
 
 ---
+
+## Användningsexempel
+
+### Fullständig workflow: Generera → Konsumera → Analysera
+
+```java
+import eu.frosteby.ontology.*;
+import org.apache.jena.rdf.model.*;
+
+// 1. Generera JSON-LD-ontologin
+Model model = ModelFactory.createDefaultModel();
+LovecraftOntologyJsonLD.createOntology(model);
+LovecraftOntologyJsonLD.saveModelAsJsonLD(model, "my_ontology.jsonld");
+
+// 2. Konsumera JSON-LD och omvandla till RDF-modell
+Model loadedModel = ConsumeJsonLD.loadJsonLDFileWithPrefixes("my_ontology.jsonld");
+
+// 3. Fråga modellen
+Resource cthulhu = loadedModel.createResource("https://lovecraft.frosteby.eu/instance#Cthulhu");
+Property controls = loadedModel.createProperty("https://lovecraft.frosteby.eu/ontology#controls");
+
+// Hitta vad Cthulhu kontrollera
+StmtIterator iter = loadedModel.listStatements(cthulhu, controls, (RDFNode)null);
+while (iter.hasNext()) {
+    Statement stmt = iter.next();
+    System.out.println("Cthulhu controls: " + stmt.getObject());
+}
+
+// 4. Spara som Turtle för vidare användning
+ConsumeJsonLD.saveModelAsTurtle(loadedModel, "my_ontology.ttl");
+```
+
+### Exempel: Omvandling mellan format
+
+```java
+import eu.frosteby.ontology.*;
+
+// Omvandla Turtle till JSON-LD
+ConsumeJsonLD.convertTurtleToJsonLD("input.ttl", "output.jsonld");
+
+// Omvandla JSON-LD till Turtle
+ConsumeJsonLD.convertJsonLDToTurtle("input.jsonld", "output.ttl");
+```
 
 ## Exempel: Använda ontologin
 
@@ -372,6 +599,37 @@ För frågor om Java-implementationen, se [huvud-dokumentationen](../README.md).
 
 ---
 
+## JSON-LD vs Turtle
+
+### Skillnader mellan formaten
+
+| Aspekt | Turtle | JSON-LD |
+|--------|--------|---------|
+| **Format** | Textbaserat, trippel-baserat | JSON-baserat, dokument-baserat |
+| **Läsbarhet** | Mänskligt läsbart | Maskinläsbart, mänskligt läsbart med formatering |
+| **Struktur** | Prefix + tripplar | @context + noder med @id, @type |
+| **Användning** | RDF/Linked Data-standard | Web API-er, JavaScript-applikationer |
+| **Apache Jena** | Inbyggt stöd | Inbyggt stöd via RDFDataMgr |
+
+### När ska man använda vilket format?
+
+- **Använd Turtle** om du arbetar med RDF-verktyg, SPARQL-frågor, eller behöver fullständig RDF/OWL-support
+- **Använd JSON-LD** om du integrerar med webb-API:er, JavaScript-applikationer, eller behöver ett lättviktigt JSON-format
+
+Båda implementeringarna representerar samma ontologi med samma klasser, egenskaper och individer.
+
+### Apache Jena och JSON-LD
+
+Apache Jena har fullt stöd för JSON-LD via `RDFDataMgr`-klassen:
+
+```java
+// Läs JSON-LD
+RDFDataMgr.read(model, inputStream, null, RDFFormat.JSONLD);
+
+// Skriv JSON-LD
+RDFDataMgr.write(outputStream, model, RDFFormat.JSONLD);
+```
+
 ## Länkar
 
 - [Apache Jena Dokumentation](https://jena.apache.org/documentation/)
@@ -379,3 +637,4 @@ För frågor om Java-implementationen, se [huvud-dokumentationen](../README.md).
 - [OWL 2 Specification](https://www.w3.org/TR/owl2-overview/)
 - [RDF 1.1 Specification](https://www.w3.org/TR/rdf11-primer/)
 - [Turtle Syntax](https://www.w3.org/TeamSubmission/turtle/)
+- [JSON-LD Specification](https://json-ld.org/spec/latest/json-ld/)

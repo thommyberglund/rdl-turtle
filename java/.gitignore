@@ -10,6 +10,10 @@
 # Generated ontology classes
 src/main/java/org/lovecraft/ontology/generated/
 
+# Generated ontology files
+*.ttl
+*.jsonld
+
 # Maven
 target/
 pom.xml.versionsBackup

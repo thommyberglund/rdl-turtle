@@ -5,6 +5,7 @@ import org.apache.jena.vocabulary.*;
 import org.apache.jena.ontology.*;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.riot.Lang;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -128,7 +129,7 @@ public class LovecraftOntologyJsonLDTest {
         
         for (String individualName : individualNames) {
             Resource individual = model.createResource(LOVE_INST_NS + individualName);
-            assertTrue(model.contains(individual, RDF.type, OWL.NamedIndividual),
+            assertTrue(model.contains(individual, RDF.type, model.createResource(OWL.NS + "NamedIndividual")),
                 "Individual " + individualName + " should exist");
         }
     }
@@ -199,7 +200,7 @@ public class LovecraftOntologyJsonLDTest {
         try {
             // Spara modellen som JSON-LD
             try (FileOutputStream out = new FileOutputStream(filename)) {
-                RDFDataMgr.write(out, model, RDFFormat.JSONLD);
+                RDFDataMgr.write(out, model, Lang.JSONLD);
             }
             
             // Verifiera att filen existerar
@@ -208,7 +209,7 @@ public class LovecraftOntologyJsonLDTest {
             // Ladda filen och verifiera innehållet
             Model loadedModel = ModelFactory.createDefaultModel();
             try (FileInputStream in = new FileInputStream(filename)) {
-                RDFDataMgr.read(loadedModel, in, null, RDFFormat.JSONLD);
+                RDFDataMgr.read(loadedModel, in, null, Lang.JSONLD);
             }
             
             // Verifiera att den laddade modellen har samma storlek

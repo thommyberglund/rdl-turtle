@@ -3,10 +3,13 @@ package eu.frosteby.ontology;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.vocabulary.*;
 import org.apache.jena.ontology.*;
+import org.apache.jena.riot.RDFDataMgr;
+import org.apache.jena.riot.Lang;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -188,7 +191,7 @@ public class ConsumeJsonLDTest {
             
             for (String individualName : individualNames) {
                 Resource individual = loadedModel.createResource(LOVE_INST_NS + individualName);
-                assertTrue(loadedModel.contains(individual, RDF.type, OWL.NamedIndividual),
+                assertTrue(loadedModel.contains(individual, RDF.type, model.createResource(OWL.NS + "NamedIndividual")),
                     "Individual " + individualName + " should exist");
             }
             

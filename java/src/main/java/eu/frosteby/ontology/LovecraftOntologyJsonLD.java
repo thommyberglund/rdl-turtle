@@ -5,6 +5,7 @@ import org.apache.jena.vocabulary.*;
 import org.apache.jena.ontology.*;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.riot.Lang;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

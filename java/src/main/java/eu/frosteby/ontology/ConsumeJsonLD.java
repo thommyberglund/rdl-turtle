@@ -5,6 +5,7 @@ import org.apache.jena.vocabulary.*;
 import org.apache.jena.ontology.*;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.riot.RDFFormat;
+import org.apache.jena.riot.Lang;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -52,8 +53,9 @@ public class ConsumeJsonLD {
             
             // Hitta alla individer
             System.out.println("\nIndividuals:");
+            Resource namedIndividual = model.createResource(OWL.NS + "NamedIndividual");
             StmtIterator individualIter = model.listStatements(
-                null, RDF.type, OWL.NamedIndividual
+                null, RDF.type, namedIndividual
             );
             while (individualIter.hasNext()) {
                 Statement stmt = individualIter.next();
@@ -85,7 +87,7 @@ public class ConsumeJsonLD {
         try (FileInputStream in = new FileInputStream(filename)) {
             Model model = ModelFactory.createDefaultModel();
             // Läs JSON-LD och ladda in i modellen
-            RDFDataMgr.read(model, in, null, RDFFormat.JSONLD);
+            RDFDataMgr.read(model, in, null, Lang.JSONLD);
             return model;
         } catch (IOException e) {
             System.err.println("Error loading JSON-LD file " + filename + ": " + e.getMessage());
@@ -123,7 +125,7 @@ public class ConsumeJsonLD {
      */
     public static void saveModelAsTurtle(Model model, String filename) {
         try (FileOutputStream out = new FileOutputStream(filename)) {
-            RDFDataMgr.write(out, model, RDFFormat.TURTLE);
+            RDFDataMgr.write(out, model, Lang.TURTLE);
             System.out.println("Model saved to " + filename + " in Turtle format");
         } catch (IOException e) {
             System.err.println("Error saving model to " + filename + ": " + e.getMessage());
@@ -139,7 +141,7 @@ public class ConsumeJsonLD {
      */
     public static void saveModelAsJsonLD(Model model, String filename) {
         try (FileOutputStream out = new FileOutputStream(filename)) {
-            RDFDataMgr.write(out, model, RDFFormat.JSONLD);
+            RDFDataMgr.write(out, model, Lang.JSONLD);
             System.out.println("Model saved to " + filename + " in JSON-LD format");
         } catch (IOException e) {
             System.err.println("Error saving model to " + filename + ": " + e.getMessage());
@@ -169,7 +171,7 @@ public class ConsumeJsonLD {
     public static void convertTurtleToJsonLD(String inputTurtleFile, String outputJsonLDFile) {
         try (FileInputStream in = new FileInputStream(inputTurtleFile)) {
             Model model = ModelFactory.createDefaultModel();
-            RDFDataMgr.read(model, in, null, RDFFormat.TURTLE);
+            RDFDataMgr.read(model, in, null, Lang.TURTLE);
             
             // Lägg till namnrymdsprefix
             model.setNsPrefix("lovecraft", LOVE_NS);

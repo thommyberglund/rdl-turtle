@@ -2,6 +2,8 @@
 
 > **Python-implementation av RDL/OWL-ontologi i Turtle- och JSON-LD-format**
 
+[![Python CI](https://github.com/thommyberglund/rdl-turtle/actions/workflows/python-ci.yml/badge.svg)](https://github.com/thommyberglund/rdl-turtle/actions/workflows/python-ci.yml)
+
 Denna katalog innehåller en **Python-implementation** som genererar en **OWL-ontologi** med **RDL** (Resource Description Language) i **Turtle-format** och **JSON-LD-format**, baserad på **H.P. Lovecrafts Cthulhu-mytologi**.
 
 ---
@@ -485,6 +487,30 @@ save_as_turtle(graph, "my_ontology.ttl")
 - **Använd JSON-LD** om du integrerar med webb-API:er, JavaScript-applikationer, eller behöver ett lättviktigt JSON-format
 
 Båda implementeringarna representerar samma ontologi med samma klasser, egenskaper och individer.
+
+## Continuous Integration
+
+Projektet använder **GitHub Actions** för automatisk testning. CI-konfigurationen finns i [`.github/workflows/python-ci.yml`](../../.github/workflows/python-ci.yml).
+
+### CI-Workflow
+
+- **Trigger**: Push till `main`-branchen eller pull requests som påverkar `python/` katalogen
+- **Miljö**: Ubuntu latest med Python 3.11
+- **Steg**:
+  1. Checkout repository
+  2. Sätt upp Python 3.11
+  3. Installera beroenden (`pip install -r requirements.txt`)
+  4. Kör enhetstester (`python -m unittest discover -v -s . -p 'test_*.py'`)
+  5. Generera ontologi-filer
+  6. Verifiera genererade filer
+
+### Lokalt test
+
+För att köra samma tester lokalt:
+```bash
+cd python
+python -m unittest discover -v -s . -p 'test_*.py'
+```
 
 ##  Support
 

@@ -2,6 +2,9 @@
 
 > **Referensimplementation av RDL och OWL i Turtle-format med Lovecraft-tema**
 
+[![Java CI](https://github.com/thommyberglund/rdl-turtle/actions/workflows/java-ci.yml/badge.svg)](https://github.com/thommyberglund/rdl-turtle/actions/workflows/java-ci.yml)
+[![Python CI](https://github.com/thommyberglund/rdl-turtle/actions/workflows/python-ci.yml/badge.svg)](https://github.com/thommyberglund/rdl-turtle/actions/workflows/python-ci.yml)
+
 Detta repository innehåller implementeringar i **Python** och **Java** som genererar en **OWL-ontologi** (Web Ontology Language) med **RDL** (Resource Description Language) i **Turtle-format**. Ontologin beskriver entiteter, relationer och koncept från **H.P. Lovecrafts Cthulhu-mytologi**.
 
 ---
@@ -86,6 +89,7 @@ Ontologin inkluderar:
 
 - [Python-implementation](./python/README.md) - Detaljer om Python-koden
 - [Java-implementation](./java/README.md) - Detaljer om Java-koden
+- [Ontology to Java Generator](./java/GENERATOR_README.md) - Dokumentation för generatorn som skapar Java-klasser från Turtle-filer
 
 ---
 
@@ -134,6 +138,35 @@ instance:Cthulhu a lovecraft:GreatOldOne, owl:NamedIndividual ;
 instance:Necronomicon a lovecraft:Book, owl:NamedIndividual ;
     lovecraft:hasName "Necronomicon"@en ;
     lovecraft:createdBy instance:AbdulAlhazred .
+```
+
+---
+
+## Continuous Integration
+
+Projektet använder **GitHub Actions** för automatisk byggnad och testning av både Java- och Python-implementationerna.
+
+### CI-Workflows
+
+- **[Java CI](.github/workflows/java-ci.yml)**: Bygg och test Java-implementationen
+  - Trigger: Push/pull requests till `java/` katalogen
+  - Miljö: Ubuntu latest, Java 11, Maven
+  - Kör: Kompilering, enhetstester, paketering
+
+- **[Python CI](.github/workflows/python-ci.yml)**: Test Python-implementationen
+  - Trigger: Push/pull requests till `python/` katalogen
+  - Miljö: Ubuntu latest, Python 3.11
+  - Kör: Installera beroenden, enhetstester, filgenerering
+
+### Lokalt test
+
+För att köra alla tester lokalt:
+```bash
+# Java-tester
+cd java && mvn clean test
+
+# Python-tester
+cd python && python -m unittest discover -v -s . -p 'test_*.py'
 ```
 
 ---

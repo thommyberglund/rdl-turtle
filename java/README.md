@@ -2,6 +2,8 @@
 
 > **Java-implementation av RDL/OWL-ontologi i Turtle- och JSON-LD-format**
 
+[![Java CI](https://github.com/thommyberglund/rdl-turtle/actions/workflows/java-ci.yml/badge.svg)](https://github.com/thommyberglund/rdl-turtle/actions/workflows/java-ci.yml)
+
 Denna katalog innehåller en **Java-implementation** som genererar en **OWL-ontologi** med **RDL** (Resource Description Language) i **Turtle-format** och **JSON-LD-format**, baserad på **H.P. Lovecrafts Cthulhu-mytologi**. Implementationen använder **Apache Jena** för att hantera RDF-data.
 
 ---
@@ -26,6 +28,12 @@ java/
         ├── LovecraftOntologyJsonLDTest.java # Enhetstester (JSON-LD)
         └── ConsumeJsonLDTest.java           # Enhetstester (konsumtion)
 ```
+
+> **Obs!** De genererade Turtle- och JSON-LD-filerna sparas i repository-roten:
+> - `lovecraft_mythos.ttl`
+> - `lovecraft_mythos_simple.ttl`
+> - `lovecraft_mythos.jsonld`
+> - `lovecraft_mythos_simple.jsonld`
 
 ---
 
@@ -62,7 +70,7 @@ mvn dependency:resolve
 
 ```bash
 # Kompilera och kör huvudklassen
-mvn clean compile exec:java -Dexec.mainClass="org.lovecraft.ontology.Main"
+mvn clean compile exec:java -Dexec.mainClass="eu.frosteby.ontology.Main"
 ```
 
 ### Bygga JAR-filen
@@ -72,7 +80,7 @@ mvn clean compile exec:java -Dexec.mainClass="org.lovecraft.ontology.Main"
 mvn clean package
 
 # Kör JAR-filen
-java -jar target/lovecraft-ontology-1.0.0.jar
+java -jar target/ontology-1.0.0.jar
 ```
 
 ### Kör med Maven
@@ -83,8 +91,8 @@ mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.LovecraftOntology"
 ```
 
 Detta kommer att generera två Turtle-filer:
-- `java/lovecraft_mythos.ttl` - Fullständig ontologi
-- `java/lovecraft_mythos_simple.ttl` - Kopia för läsbarhet
+- `lovecraft_mythos.ttl` - Fullständig ontologi
+- `lovecraft_mythos_simple.ttl` - Kopia för läsbarhet
 
 ### Generera JSON-LD
 
@@ -94,8 +102,8 @@ mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.LovecraftOntologyJsonLD"
 ```
 
 Detta kommer att generera två JSON-LD-filer:
-- `java/lovecraft_mythos.jsonld` - Fullständig ontologi
-- `java/lovecraft_mythos_simple.jsonld` - Kopia för läsbarhet
+- `lovecraft_mythos.jsonld` - Fullständig ontologi
+- `lovecraft_mythos_simple.jsonld` - Kopia för läsbarhet
 
 ### Konsumera JSON-LD
 
@@ -363,7 +371,7 @@ Projektet inkluderar nu `OntologyToJavaGenerator` som gör det omvända: läser 
 
 ```bash
 # Generera Java-klasser från en Turtle-fil
-mvn exec:java -Dexec.mainClass="org.lovecraft.ontology.OntologyToJavaGenerator" -Dexec.args="lovecraft_mythos.ttl"
+mvn exec:java -Dexec.mainClass="eu.frosteby.ontology.OntologyToJavaGenerator" -Dexec.args="lovecraft_mythos.ttl"
 ```
 
 ### Vad genereras?
@@ -376,7 +384,7 @@ mvn exec:java -Dexec.mainClass="org.lovecraft.ontology.OntologyToJavaGenerator" 
 ### Exempel på användning
 
 ```java
-import org.lovecraft.ontology.generated.*;
+import eu.frosteby.ontology.generated.*;
 
 // Skapa instanser
 Entity entity = new Entity(OntologyFactory.CTHULHU_URI);
@@ -628,6 +636,31 @@ RDFDataMgr.read(model, inputStream, null, RDFFormat.JSONLD);
 
 // Skriv JSON-LD
 RDFDataMgr.write(outputStream, model, RDFFormat.JSONLD);
+```
+
+## Continuous Integration
+
+Projektet använder **GitHub Actions** för automatisk byggnad och testning. CI-konfigurationen finns i [`.github/workflows/java-ci.yml`](../../.github/workflows/java-ci.yml).
+
+### CI-Workflow
+
+- **Trigger**: Push till `main`-branchen eller pull requests som påverkar `java/` katalogen
+- **Miljö**: Ubuntu latest med Java 11
+- **Steg**:
+  1. Checkout repository
+  2. Sätt upp JDK 11
+  3. Cacha Maven-beroenden
+  4. Bygg med Maven (`mvn clean compile`)
+  5. Kör enhetstester (`mvn test`)
+  6. Bygg JAR-paket (`mvn package -DskipTests`)
+  7. Verifiera genererade filer
+
+### Lokalt test
+
+För att köra samma tester lokalt:
+```bash
+cd java
+mvn clean test
 ```
 
 ## Länkar

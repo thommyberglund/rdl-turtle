@@ -191,7 +191,7 @@ public class ConsumeJsonLDTest {
             
             for (String individualName : individualNames) {
                 Resource individual = loadedModel.createResource(LOVE_INST_NS + individualName);
-                assertTrue(loadedModel.contains(individual, RDF.type, model.createResource(OWL.NS + "NamedIndividual")),
+                assertTrue(loadedModel.contains(individual, RDF.type, loadedModel.createResource(OWL.NS + "NamedIndividual")),
                     "Individual " + individualName + " should exist");
             }
             

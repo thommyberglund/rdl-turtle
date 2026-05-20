@@ -129,7 +129,8 @@ public class LovecraftOntologyJsonLDTest {
         
         for (String individualName : individualNames) {
             Resource individual = model.createResource(LOVE_INST_NS + individualName);
-            assertTrue(model.contains(individual, RDF.type, model.createResource(OWL.NS + "NamedIndividual")),
+            Resource namedIndividual = model.createResource(OWL.NS + "NamedIndividual");
+            assertTrue(model.contains(individual, RDF.type, namedIndividual),
                 "Individual " + individualName + " should exist");
         }
     }

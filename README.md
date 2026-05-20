@@ -50,7 +50,7 @@ Ontologin inkluderar:
 ### **Klasser (OWL Classes)**
 - `Entity` - Basklass för alla entiteter
 - `Deity` - Kosmiska gudomligheter
-  - `GreatOldOne` - Mektiga urgamla väsen (t.ex. Cthulhu, Dagon)
+  - `GreatOldOne` - Mäktiga urgamla väsen (t.ex. Cthulhu, Dagon)
   - `OuterGod` - Väsener från utanför universum (t.ex. Azathoth, Nyarlathotep)
   - `ElderGod` - Neutrala eller välvilliga väsen (t.ex. Yig)
 - `Creature` - Icke-gudomliga väsen (t.ex. Deep One, Shoggoth)
